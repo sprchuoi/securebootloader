@@ -1,0 +1,80 @@
+site_name: BootChain — Secure Boot Study (MCU → SoC)
+site_description: >-
+  A structured, hands-on study path covering Secure Boot concepts from a
+  simple MCU (Arm Cortex-M) up to a complex SoC (Arm Cortex-A, TrustZone,
+  ARM Trusted Firmware), including CA hierarchies, Secure Enclave, Flash
+  Secure Boot, SSL/TLS, and HSM implementation.
+site_url: https://sprchuoi.github.io/securebootloader/
+repo_name: sprchuoi/securebootloader
+repo_url: https://github.com/sprchuoi/securebootloader
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - content.code.copy
+    - toc.integrate
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - 00 · Foundations: 00-foundations/README.md
+  - 01 · Boot ROM: 01-boot-rom/README.md
+  - 02 · Chain of Trust: 02-chain-of-trust/README.md
+  - 03 · Certificate Authority: 03-certificate-authority/README.md
+  - 04 · Cryptography Basics: 04-cryptography-basics/README.md
+  - 05 · MCU Secure Boot: 05-mcu-secure-boot/README.md
+  - 06 · Flash Secure Boot: 06-flash-secure-boot/README.md
+  - 07 · SoC Secure Boot: 07-soc-secure-boot/README.md
+  - 08 · Secure Enclave: 08-secure-enclave/README.md
+  - 09 · Key Management & Provisioning: 09-key-management-provisioning/README.md
+  - 10 · HSM Implementation: 10-hsm-implementation/README.md
+  - 11 · Anti-Rollback & Versioning: 11-anti-rollback-versioning/README.md
+  - 12 · Attestation & Measured Boot: 12-attestation-measured-boot/README.md
+  - 13 · SSL/TLS Concept: 13-ssl-tls-concept/README.md
+  - 14 · Attacks & Mitigations: 14-attacks-mitigations/README.md
+  - 15 · Practical Labs: 15-practical-labs/README.md
+  - Resources:
+      - Glossary: resources/glossary.md
+      - References: resources/references.md

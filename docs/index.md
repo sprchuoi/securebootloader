@@ -26,6 +26,7 @@ BootChain/
 ├── 14-attacks-mitigations/         # Glitching, downgrade, TOCTOU, known CVEs
 ├── 15-practical-labs/              # Hands-on: build a toy secure boot verifier
 ├── 16-standards-by-domain/         # ISO 21434, PSA Certified, PCI HSM, UEFI, etc. per industry
+├── 17-open-source-bootloaders/     # U-Boot, MCUboot, Zephyr, FreeRTOS, TF-A/OP-TEE integration
 └── resources/                      # Glossary + external references
 ```
 
@@ -57,6 +58,7 @@ flowchart TD
     SSL --> J[14 Attacks & Mitigations]
     J --> K[15 Practical Labs]
     K --> ST[16 Standards by Domain]
+    K --> OSS[17 Open-Source Bootloaders]
 ```
 
 ### Concept map — how the new topics relate to the core chain
@@ -75,6 +77,8 @@ flowchart LR
     SOC7 -->|isolated coprocessor variant| ENC8[08 Secure Enclave]
     ENC8 -->|feeds device-unique keys to| KEY9[09 Key Mgmt & Provisioning]
     KEY9 -->|keys signed/managed via| HSM10
+    SOC7 -->|reference impl used by| OSS17[17 Open-Source Bootloaders]
+    MCU5 -->|reference impl used by| OSS17
 ```
 
 ## How to use each folder

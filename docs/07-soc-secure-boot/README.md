@@ -90,7 +90,7 @@ sequenceDiagram
     Mon->>NS: Return result via SMC return registers
 ```
 
-
+### Full boot sequence — from Boot ROM to kernel
 
 ```mermaid
 sequenceDiagram
@@ -111,6 +111,29 @@ sequenceDiagram
     BL33->>Kernel: Verify (signed kernel / dm-verity) & boot
     Kernel->>Kernel: Verified boot continues (rootfs via dm-verity)
 ```
+
+### TF-A Trusted Board Boot (TBB) — the certificate-based verification detail
+TF-A's reference secure boot flow ("Trusted Board Boot") is built entirely
+on the **X.509 certificate chain model** from folder 03, with TF-A-specific
+certificate roles:
+
+| Certificate | Signed by | Purpose |
+|---|---|---|
+| **ROTPK** (Root Of Trust Public Key) | N/A — hash lives in OTP/eFuse | Anchors the entire TBB chain |
+| **Key certificates** | ROTPK (or a "trusted key" cert) | Authorize a specific *content* certificate's public key (separates "who can sign a key" from "who can sign an image") |
+| **Content certificates** | Corresponding key cert's key | Bind a specific image's *hash* (SHA-256) to the chain — one per BL3x image |
+
+This 2-level "key cert → content cert" split lets TF-A rotate the actual
+image-signing key without re-issuing the top-level ROTPK-anchored cert,
+mirroring folder 03's Root/Intermediate/Leaf pattern almost exactly.
+
+```mermaid
+flowchart TD
+    OTP[(OTP: ROTPK hash)] --> KeyCert[BL3x Key Certificate]
+    KeyCert --> ContentCert[BL3x Content Certificate\nbinds image hash]
+    ContentCert --> Image[Actual BL31/BL32/BL33 image]
+```
+
 
 ## Pseudo-code — BL2 verifying multiple next-stage images
 
@@ -149,6 +172,34 @@ int bl2_load_and_verify_all(void) {
 | Runtime services | None | PSCI, SMC, TEE (OP-TEE), DRM |
 | Reference impl. | Vendor-specific | ARM Trusted Firmware-A (open source) |
 
+## Where open-source bootloaders/OSes plug into this chain
+
+TF-A defines stages, but **doesn't implement BL33 or the OS itself** —
+those are almost always open-source projects. See folder 17 for the full
+comparison, but the short version:
+
+- **BL33 slot** is most commonly **U-Boot** (compiled with `CONFIG_TFABOOT`
+  or as a UEFI payload) — U-Boot then loads and verifies the Linux
+  kernel (`FIT` image signature) before jumping to it.
+- On smaller Cortex-A/Cortex-R SoCs without a rich OS, BL33 (or even
+  BL32) can instead be **Zephyr** or **FreeRTOS** directly — e.g., a
+  safety-island core running Zephyr as a secondary OS alongside Linux
+  on the main cores.
+- **OP-TEE** (folder 07's BL32 slot) is itself open source and is the de
+  facto reference Trusted OS used with TF-A.
+
+```mermaid
+flowchart LR
+    BL2 -->|verifies| BL31[BL31: TF-A Secure Monitor]
+    BL31 -->|verifies + jumps| BL33
+    subgraph BL33 slot - Non-Secure world bootloader
+        UBOOT[U-Boot] -->|verifies FIT image| Linux[Linux Kernel]
+        ZEPHYR[Zephyr as BL33 or app core OS]
+        FREERTOS[FreeRTOS as BL33 or app core OS]
+    end
+    BL31 -->|optional| BL32[BL32: OP-TEE Trusted OS]
+```
+
 ## Checklist
 - [ ] Name the 5 canonical TF-A boot stages and what each does.
 - [ ] What is the Secure Monitor (BL31/EL3) responsible for at runtime,
@@ -162,9 +213,15 @@ int bl2_load_and_verify_all(void) {
       needing (hint: a filesystem)?
 - [ ] Give an example of a runtime SMC call and trace which component
       handles it.
+- [ ] Why does TF-A separate "key certificates" from "content
+      certificates" instead of signing images directly with the ROTPK?
+- [ ] Which open-source project typically occupies the BL33 slot, and
+      what does it verify before handing off to the kernel?
 
 ## Further Reading
 `resources/references.md` → ARM Trusted Firmware-A docs (Trusted Board
-Boot design, Firmware Image Package spec), Arm TrustZone technology
-overview, Arm PSCI specification, Arm SPM/FF-A documentation, OP-TEE
-documentation.
+Boot design, Firmware Image Package spec, Trusted Board Boot certificate
+generation tool `cert_create`), Arm TrustZone technology overview, Arm
+PSCI specification, Arm SPM/FF-A documentation, OP-TEE documentation,
+U-Boot "Verified Boot" documentation. See folder 17 for a deeper
+comparison of U-Boot / Zephyr / FreeRTOS secure boot integration.

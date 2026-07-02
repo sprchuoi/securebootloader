@@ -31,6 +31,16 @@
 - Android — Verified Boot (AVB) documentation (rollback index, dm-verity)
 - Apple — Platform Security Guide (Secure Boot chain, Secure Enclave)
 
+## Open-Source Bootloader / RTOS Projects (see folder 17)
+- U-Boot — "Verified Boot" documentation (FIT image signing, `CONFIG_FIT_SIGNATURE`)
+- MCUboot — project documentation (`docs/design.md`, `docs/imgtool.md` in
+  the MCUboot GitHub repository)
+- Zephyr Project — "Device Firmware Upgrade (DFU) and MCUboot" documentation
+- FreeRTOS — OTA documentation (AWS IoT FreeRTOS OTA Agent library)
+- Trusted Firmware-M (TF-M) — PSA Root of Trust reference implementation
+  documentation (trustedfirmware.org)
+- OP-TEE — documentation and Trusted Application development guide
+
 ## Domain-Specific Standards (see folder 16)
 - **Automotive**: ISO/SAE 21434, ISO 26262, UNECE R155/R156, AUTOSAR
   SecOC/CSM, EVITA HSM profiles
@@ -63,6 +73,9 @@
 5. TCG TPM 2.0 spec + RFC 9334 (deep dive on 12 Attestation)
 6. Your domain's standard from folder 16 (e.g., ISO/SAE 21434 for
    automotive, PCI HSM for payment) as the final compliance layer
+7. U-Boot Verified Boot docs + MCUboot design doc (ties 07 SoC Secure
+   Boot and 05 MCU Secure Boot to their real open-source implementations
+   in folder 17)
 
 > Note: Fetch the latest versions of these documents from their official
 > sites (arm.com, trustedfirmware.org, nist.gov, trustedcomputinggroup.org,

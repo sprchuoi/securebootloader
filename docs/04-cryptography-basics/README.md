@@ -18,18 +18,24 @@ of data. Any change to the data changes the hash completely.
   never forge a signature.
 - Common choices: **RSA-2048/3072** (older, larger, needs more RAM),
   **ECDSA P-256/P-384** (smaller keys/signatures, common in newer MCUs).
+- See "Algorithm Deep Dive" below for the full math, diagrams, and
+  trade-offs of each.
 
 ### 3. Symmetric encryption (confidentiality, optional)
 - AES-CBC/CTR/GCM to encrypt firmware images so they can't be read even
   if signature isn't the concern (IP protection). Different concern from
   authenticity — encryption != authentication. Use **AES-GCM** (AEAD) when
   you need both.
+- See "Algorithm Deep Dive" below for AES-CBC's block-chaining mechanics
+  and why it needs a separate MAC for authenticity.
 
 ### 4. MAC (lightweight authenticity, resource-constrained MCUs)
 - HMAC-SHA256 or AES-CMAC: symmetric-key integrity+authenticity check,
   cheaper than asymmetric verify, but requires a **shared secret** on the
   device (harder to manage than a public key — compromise of device key
   material can be worse).
+- See "Algorithm Deep Dive" below for AES-CMAC's construction and why
+  it's popular on MCUs without an asymmetric-crypto accelerator.
 
 ### Signature verification is NOT optional-cost — do the math
 | Operation | Typical cost on Cortex-M0/M3 (no crypto HW accel) |
@@ -40,6 +46,94 @@ of data. Any change to the data changes the hash completely.
 
 This is why many MCUs include a **hardware crypto accelerator** (AES/SHA/
 PKA) — verifying on every boot must be fast enough not to hurt UX.
+
+## Algorithm Deep Dive — RSA, ECDSA, AES-CBC, AES-CMAC
+
+### RSA (asymmetric signature)
+RSA signatures use modular arithmetic over large integers. In secure
+boot, vendor signs offline with private exponent `d`; device verifies
+with public exponent `e` from OTP/provisioned key material.
+
+```mermaid
+flowchart LR
+    H[SHA-256 digest] --> PAD[PKCS#1 v1.5 / PSS padding]
+    PAD --> SIGN[Signature = m^d mod n]
+    SIGN --> IMG[Signature stored in image header]
+    IMG --> VER[Device computes s^e mod n and checks digest match]
+```
+
+- Strengths: mature ecosystem, widely available tooling/certs.
+- Trade-off: larger key/signature sizes and more RAM/code than ECC.
+- Typical secure-boot profile: RSA-2048 verify on device, signing in HSM.
+
+### ECDSA (asymmetric signature on elliptic curves)
+ECDSA signs the hash using an elliptic-curve private key (typically
+P-256 for MCU class devices). Verification uses curve point operations.
+
+```mermaid
+flowchart LR
+    H2[SHA-256 digest] --> K[Generate nonce k]
+    K --> R[Compute curve point k*G -> r]
+    H2 --> S[Compute s = k^-1(h + r*d) mod n]
+    R --> SIG[(r,s) signature]
+    S --> SIG
+    SIG --> VERIFY[Device verifies with public key Q on curve]
+```
+
+- Strengths: much smaller keys/signatures than RSA for similar security.
+- Trade-off: needs strong nonce generation; bad nonce reuse leaks private key.
+- Typical secure-boot profile: ECDSA P-256 + SHA-256 for constrained devices.
+
+### AES-CBC (symmetric encryption mode)
+AES-CBC encrypts firmware for confidentiality (IP protection). Each
+ciphertext block depends on the previous block plus IV.
+
+```mermaid
+flowchart LR
+    IV[IV] --> X1[XOR with P1]
+    P1[Plain block 1] --> X1
+    X1 --> E1[AES-Encrypt with key K]
+    E1 --> C1[Cipher block 1]
+    C1 --> X2[XOR with P2]
+    P2[Plain block 2] --> X2
+    X2 --> E2[AES-Encrypt with key K]
+    E2 --> C2[Cipher block 2]
+```
+
+- Strengths: simple, hardware-accelerated on many MCUs.
+- Critical limitation: **CBC gives confidentiality only**, not authenticity.
+- Secure-boot rule: never use AES-CBC alone for firmware acceptance;
+  pair with signature/MAC (or use AEAD like AES-GCM).
+
+### AES-CMAC (symmetric MAC)
+AES-CMAC computes an authentication tag from firmware blocks using AES.
+It proves integrity/authenticity to anyone with the same secret key.
+
+```mermaid
+flowchart LR
+    B1[Block 1] --> C1[Chaining state]
+    C1 --> A1[AES(K, state)]
+    B2[Block 2] --> C2[Next XOR + chain]
+    A1 --> C2
+    C2 --> A2[AES(K, state)]
+    LAST[Last block + subkey K1/K2] --> T[AES(K, final state)]
+    A2 --> LAST
+    T --> TAG[CMAC tag]
+```
+
+- Strengths: lightweight authentication when both ends share a secret.
+- Trade-off: symmetric key must exist on device; extracting one key can
+  threaten that device's trust model.
+- Good fit: closed systems with per-device keys + anti-cloning design.
+
+### Quick selection guide
+
+| Algorithm | Primary purpose | Key management model | Common secure-boot use |
+|---|---|---|---|
+| RSA | Signature (authenticity) | Public key on device, private key offline/HSM | Legacy/compatibility-heavy platforms |
+| ECDSA | Signature (authenticity) | Public key on device, private key offline/HSM | Modern MCU/SoC secure boot |
+| AES-CBC | Encryption (confidentiality) | Shared symmetric key | Optional firmware confidentiality |
+| AES-CMAC | MAC (integrity/authenticity) | Shared symmetric key | Lightweight integrity in constrained systems |
 
 ## Diagram — sign (offline, vendor side) vs verify (on-device)
 
@@ -132,7 +226,10 @@ bool device_verify_image(const uint8_t *image, size_t len,
 - [ ] Why is ECDSA often preferred over RSA on constrained MCUs?
 - [ ] What's the risk of using a shared-secret MAC instead of asymmetric
       signatures for a fleet of devices?
+- [ ] Why is AES-CBC alone unsafe for boot authenticity checks?
+- [ ] In what project conditions is AES-CMAC acceptable vs ECDSA/RSA?
 
 ## Further Reading
 `resources/references.md` → NIST FIPS 186-5 (digital signatures), FIPS
-180-4 (SHA), "Practical Cryptography for Developers" (free online book).
+180-4 (SHA), NIST SP 800-38A (CBC mode), NIST SP 800-38B (CMAC),
+"Practical Cryptography for Developers" (free online book).

@@ -5,6 +5,9 @@
 - NIST FIPS 186-5 — Digital Signature Standard (DSS)
 - NIST FIPS 180-4 — Secure Hash Standard (SHS)
 - NIST FIPS 197 — Advanced Encryption Standard (AES)
+- NIST SP 800-38A — Recommendation for Block Cipher Modes of Operation
+  (CBC/CTR and others)
+- NIST SP 800-38B — The CMAC Mode for Authentication
 - NIST FIPS 140-2/140-3 — Security Requirements for Cryptographic
   Modules (4 security levels; validated via NIST's CMVP — see folder 10
   for the full level-by-level breakdown and how it applies to HSMs)

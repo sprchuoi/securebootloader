@@ -132,7 +132,7 @@ combine an open-source bootloader with an open-source RTOS:
 | **PCI HSM** | Security requirements specifically for HSMs used in payment key management | 10 |
 | **EMVCo Security Requirements** | Chip card / terminal specifications, including key management and secure element requirements | 03, 08, 09 |
 | **Common Criteria (CC) EAL4+/EAL5+/EAL6+** | Formal security evaluation scheme often required for payment secure elements/HSMs | 08, 10 |
-| **FIPS 140-2/140-3** | US federal crypto module validation, commonly mandated for HSMs used in payment/root key ceremonies | 10 |
+| **FIPS 140-2/140-3** | US federal crypto module validation (4 security levels), commonly mandated for HSMs used in payment/root key ceremonies — see folder 10 for the full level breakdown | 10 |
 
 ## 5. Server / Cloud / Data Center
 

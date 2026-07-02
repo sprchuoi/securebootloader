@@ -4,6 +4,11 @@
 - NIST SP 800-193 — Platform Firmware Resiliency Guidelines
 - NIST FIPS 186-5 — Digital Signature Standard (DSS)
 - NIST FIPS 180-4 — Secure Hash Standard (SHS)
+- NIST FIPS 197 — Advanced Encryption Standard (AES)
+- NIST FIPS 140-2/140-3 — Security Requirements for Cryptographic
+  Modules (4 security levels; validated via NIST's CMVP — see folder 10
+  for the full level-by-level breakdown and how it applies to HSMs)
+- ISO/IEC 19790 — international standard underlying FIPS 140-3
 - RFC 5280 — X.509 Public Key Infrastructure Certificate Profile
 - TCG (Trusted Computing Group) — TPM 2.0 Library Specification
 - RFC 9334 — Remote ATtestation procedureS (RATS) Architecture

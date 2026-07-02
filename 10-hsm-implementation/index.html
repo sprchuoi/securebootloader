@@ -1216,12 +1216,12 @@ protects keys, not just <em>that</em> it does:</p>
 </ul>
 <h2 id="diagram">Diagram<a class="headerlink" href="#diagram" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart TD
-    subgraph AirGapped [Air-Gapped Vault]
+    subgraph AIRGAPPED["Air-Gapped Vault"]
         RootHSM[Root HSM]
         Officers[M-of-N Officers with Smartcards]
         Officers --&gt;|quorum auth| RootHSM
     end
-    subgraph Networked [Access-Controlled Signing Environment]
+    subgraph NETWORKED["Access-Controlled Signing Environment"]
         SignHSM[Signing HSM: Intermediate/Release Key]
         API[Authenticated Signing API]
         CI[CI/Build Pipeline]

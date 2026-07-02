@@ -1285,7 +1285,7 @@ image-signing key without re-issuing the top-level ROTPK-anchored cert,
 mirroring folder 03's Root/Intermediate/Leaf pattern almost exactly.</p>
 <pre class="mermaid"><code>flowchart TD
     OTP[(OTP: ROTPK hash)] --&gt; KeyCert[BL3x Key Certificate]
-    KeyCert --&gt; ContentCert[BL3x Content Certificate\nbinds image hash]
+    KeyCert --&gt; ContentCert[BL3x Content Certificate&lt;br/&gt;binds image hash]
     ContentCert --&gt; Image[Actual BL31/BL32/BL33 image]</code></pre>
 <h2 id="pseudo-code-bl2-verifying-multiple-next-stage-images">Pseudo-code — BL2 verifying multiple next-stage images<a class="headerlink" href="#pseudo-code-bl2-verifying-multiple-next-stage-images" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">IMG_BL31</span><span class="p">,</span><span class="w"> </span><span class="n">IMG_BL32</span><span class="p">,</span><span class="w"> </span><span class="n">IMG_BL33</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">image_id_t</span><span class="p">;</span>

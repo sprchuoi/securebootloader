@@ -1095,7 +1095,7 @@ boot (authenticated + optionally encrypted execution).</p>
     subgraph SoC/MCU
         FC[Flash Controller] --&gt;|on-the-fly decrypt + auth| BUS[Execution Bus]
         BUS --&gt; CPU
-        KEY[(Flash Encryption Key\nderived from OTP/PUF)] --&gt; FC
+        KEY[(Flash Encryption Key&lt;br/&gt;derived from OTP/PUF)] --&gt; FC
         RDP[(RDP Lock Fuse)] -.gates.-&gt; DBG[Debug Port]
     end
     ENC --&gt;|SPI/QSPI, physically probeable| FC</code></pre>

@@ -1131,8 +1131,8 @@ OTA (Over-The-Air) updates</strong> and <strong>attestation traffic</strong> (fo
     Server-&gt;&gt;Dev: Deliver signed firmware image over encrypted channel
     Dev-&gt;&gt;Dev: Secure bootloader independently verifies image signature (folders 01/02)</code></pre>
 <pre class="mermaid"><code>flowchart LR
-    RootTrustStore[(Device Trust Store:\nRoot CA public keys)] --&gt; Verify
-    ServerCertChain[Server Cert Chain] --&gt; Verify{Chain valid\n+ hostname match?}
+    RootTrustStore[(Device Trust Store:&lt;br/&gt;Root CA public keys)] --&gt; Verify
+    ServerCertChain[Server Cert Chain] --&gt; Verify{Chain valid&lt;br/&gt;+ hostname match?}
     Verify --&gt;|yes| Session[Establish encrypted session]
     Verify --&gt;|no| Abort[Abort connection]
     Session --&gt; Download[Download firmware over TLS]

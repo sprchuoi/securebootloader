@@ -47,6 +47,58 @@ of data. Any change to the data changes the hash completely.
 This is why many MCUs include a **hardware crypto accelerator** (AES/SHA/
 PKA) — verifying on every boot must be fast enough not to hurt UX.
 
+## Big picture — why, when, and which model is implemented
+
+```mermaid
+flowchart LR
+    subgraph DEV["Development / Release (offline)"]
+        BLD[Build firmware]
+        HASH[Hash image (SHA-256)]
+        SIGN{Need authenticity?}
+        CONF{Need confidentiality?}
+        MACQ{Symmetric-only device fleet?}
+    end
+
+    subgraph FACTORY["Factory provisioning (once per device)"]
+        OTP[Provision trust anchor in OTP/eFuse]
+        SYM[Optionally provision per-device AES key]
+    end
+
+    subgraph FIELD["In-field boot / OTA (every boot)"]
+        VERIFY[Verify signature or MAC]
+        DEC[Decrypt image if encrypted]
+        BOOT[Allow boot only if checks pass]
+    end
+
+    BLD --> HASH --> SIGN
+    SIGN -->|Yes, public-key model| ASYM[Implement RSA or ECDSA signature]
+    SIGN -->|No| MACQ
+    MACQ -->|Closed symmetric system| CM[Implement AES-CMAC]
+    MACQ -->|Open ecosystem / long-term update| ASYM
+    CONF -->|Yes| CBC[Implement AES-CBC/CTR/GCM encryption]
+    CONF -->|No| SKIP[Skip encryption]
+    ASYM --> OTP --> VERIFY
+    CM --> SYM --> VERIFY
+    CBC --> DEC
+    SKIP --> VERIFY
+    VERIFY --> BOOT
+    DEC --> BOOT
+```
+
+### Why / when / model mapping
+
+| Why implement | When used in lifecycle | Typical model implementation |
+|---|---|---|
+| Ensure firmware is from trusted vendor (authenticity) | Signing at release, verification at every boot | **ECDSA** (preferred on MCU) or **RSA** (legacy/compatibility) |
+| Protect firmware IP from flash readout (confidentiality) | Encrypt before release, decrypt during boot/OTA | **AES-CBC/CTR/GCM** (CBC must be paired with signature/MAC) |
+| Lightweight integrity/auth in closed device fleet | Tag generation at release, tag verify at boot | **AES-CMAC** with per-device symmetric keys |
+| Keep trust scalable across many devices and key rotation | Across product lifetime (new releases, revocation, renewal) | **Asymmetric model (RSA/ECDSA + certificate chain)** |
+
+**Implementation rule of thumb:** most production secure boot designs use
+**ECDSA/RSA for authenticity** and optionally **AES encryption** for IP
+protection; **AES-CMAC-only** is mainly for tightly controlled, symmetric
+key-managed environments.
+
 ## Algorithm Deep Dive — RSA, ECDSA, AES-CBC, AES-CMAC
 
 ### RSA (asymmetric signature)

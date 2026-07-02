@@ -127,7 +127,7 @@ flowchart LR
     H2[SHA-256 digest] --> K[Generate nonce k]
     K --> R[Compute curve point k*G -> r]
     H2 --> S[Compute s = k^-1(h + r*d) mod n]
-    R --> SIG[(r,s) signature]
+    R --> SIG["(r, s) signature"]
     S --> SIG
     SIG --> VERIFY[Device verifies with public key Q on curve]
 ```

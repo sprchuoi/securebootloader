@@ -1333,7 +1333,7 @@ P-256 for MCU class devices). Verification uses curve point operations.</p>
     H2[SHA-256 digest] --&gt; K[Generate nonce k]
     K --&gt; R[Compute curve point k*G -&gt; r]
     H2 --&gt; S[Compute s = k^-1(h + r*d) mod n]
-    R --&gt; SIG[(r,s) signature]
+    R --&gt; SIG["(r, s) signature"]
     S --&gt; SIG
     SIG --&gt; VERIFY[Device verifies with public key Q on curve]</code></pre>
 <ul>

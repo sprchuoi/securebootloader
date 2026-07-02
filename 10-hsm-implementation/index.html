@@ -1076,23 +1076,36 @@ that:
   <strong>Common Criteria</strong> for high-assurance deployments.</p>
 <h3 id="the-signing-station-architecture">The "Signing Station" architecture<a class="headerlink" href="#the-signing-station-architecture" title="Permanent link">&para;</a></h3>
 <p>A production-grade firmware signing setup typically looks like:</p>
-<div class="highlight"><pre><span></span><code>[Air-gapped room / vault]
-   Root HSM  ---(generates &amp; holds)---&gt;  Root Private Key (NEVER exported)
-        |
-        | (M-of-N quorum: e.g. 3-of-5 officers with smartcards)
-        v
-   Root Key Ceremony (witnessed, recorded, audited)
-        |
-        v
-   Signs: Intermediate CA cert  ---&gt; exported to networked Signing HSM
+<pre class="mermaid"><code>flowchart TD
+    subgraph VAULT["Air-gapped room / vault"]
+        ROOTHSM[Root HSM]
+        ROOTKEY[(Root Private Key&lt;br/&gt;NEVER exported)]
+        QUORUM["M-of-N quorum&lt;br/&gt;e.g. 3-of-5 officers with smartcards"]
+        CEREMONY[Root Key Ceremony&lt;br/&gt;witnessed, recorded, audited]
+        ICACERT[Intermediate CA cert]
 
-[Networked, access-controlled signing service]
-   Signing HSM  ---(holds)---&gt;  Intermediate/Release signing key
-        |
-        | (Build system submits firmware hash via authenticated API)
-        v
-   Returns: signature  ---&gt;  attached to firmware image ---&gt;  released
-</code></pre></div>
+        ROOTHSM --&gt;|generates &amp; holds| ROOTKEY
+        QUORUM --&gt; CEREMONY
+        ROOTKEY --&gt; CEREMONY
+        CEREMONY --&gt;|signs| ICACERT
+    end
+
+    subgraph SIGNSVC["Networked, access-controlled signing service"]
+        SIGNHSM[Signing HSM]
+        RELKEY[(Intermediate / Release signing key)]
+        BUILD[Build system]
+        SIG[Signature]
+        IMAGE[Firmware image + signature]
+        RELEASE[Released]
+
+        BUILD --&gt;|submits firmware hash via authenticated API| SIGNHSM
+        SIGNHSM --&gt;|holds| RELKEY
+        SIGNHSM --&gt;|returns| SIG
+        SIG --&gt;|attached to| IMAGE
+        IMAGE --&gt; RELEASE
+    end
+
+    ICACERT --&gt;|exported to| SIGNHSM</code></pre>
 <h3 id="key-ceremony-basics-root-key-generation-event">Key ceremony basics (Root key generation event)<a class="headerlink" href="#key-ceremony-basics-root-key-generation-event" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Conducted in a <strong>controlled, witnessed environment</strong> (often recorded

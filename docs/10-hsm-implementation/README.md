@@ -130,12 +130,12 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    subgraph AirGapped [Air-Gapped Vault]
+    subgraph AIRGAPPED["Air-Gapped Vault"]
         RootHSM[Root HSM]
         Officers[M-of-N Officers with Smartcards]
         Officers -->|quorum auth| RootHSM
     end
-    subgraph Networked [Access-Controlled Signing Environment]
+    subgraph NETWORKED["Access-Controlled Signing Environment"]
         SignHSM[Signing HSM: Intermediate/Release Key]
         API[Authenticated Signing API]
         CI[CI/Build Pipeline]

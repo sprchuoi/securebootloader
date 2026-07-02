@@ -67,12 +67,12 @@ sequenceDiagram
     participant Enclave as Secure Enclave (own boot chain)
     participant Store as Enclave Key Store
 
-    Note over Enclave: Enclave booted independently,\nverified its own firmware at power-on
+    Note over Enclave: Enclave booted independently,<br/>verified its own firmware at power-on
     App->>Enclave: Request: "sign this transaction hash"
     Enclave->>Store: Use private key internally (never exported)
     Enclave->>Enclave: Perform signing operation inside enclave
     Enclave->>App: Return signature only
-    Note over App: App never sees the private key,\nonly the operation's result
+    Note over App: App never sees the private key,<br/>only the operation's result
 ```
 
 ## Pseudo-code — mailbox request/response pattern

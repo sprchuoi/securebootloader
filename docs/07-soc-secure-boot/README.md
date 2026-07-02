@@ -130,7 +130,7 @@ mirroring folder 03's Root/Intermediate/Leaf pattern almost exactly.
 ```mermaid
 flowchart TD
     OTP[(OTP: ROTPK hash)] --> KeyCert[BL3x Key Certificate]
-    KeyCert --> ContentCert[BL3x Content Certificate\nbinds image hash]
+    KeyCert --> ContentCert[BL3x Content Certificate<br/>binds image hash]
     ContentCert --> Image[Actual BL31/BL32/BL33 image]
 ```
 

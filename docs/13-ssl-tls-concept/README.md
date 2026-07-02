@@ -80,8 +80,8 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-    RootTrustStore[(Device Trust Store:\nRoot CA public keys)] --> Verify
-    ServerCertChain[Server Cert Chain] --> Verify{Chain valid\n+ hostname match?}
+    RootTrustStore[(Device Trust Store:<br/>Root CA public keys)] --> Verify
+    ServerCertChain[Server Cert Chain] --> Verify{Chain valid<br/>+ hostname match?}
     Verify -->|yes| Session[Establish encrypted session]
     Verify -->|no| Abort[Abort connection]
     Session --> Download[Download firmware over TLS]

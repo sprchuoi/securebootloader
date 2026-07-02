@@ -10,9 +10,9 @@ actually be asked to comply with, per domain.
 
 ```mermaid
 flowchart TD
-    Generic[Generic Secure Boot Concepts\n00-15] --> Auto[Automotive\n+ UDS ISO 14229]
+    Generic[Generic Secure Boot Concepts<br/>00-15] --> Auto[Automotive<br/>+ UDS ISO 14229]
     Generic --> Mobile[Mobile / Consumer]
-    Generic --> IoT[IoT / Embedded\n+ MCUboot/Zephyr/FreeRTOS]
+    Generic --> IoT[IoT / Embedded<br/>+ MCUboot/Zephyr/FreeRTOS]
     Generic --> Pay[Payment]
     Generic --> Cloud[Server / Cloud]
 ```

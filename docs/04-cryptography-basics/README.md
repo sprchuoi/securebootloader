@@ -191,12 +191,12 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    subgraph Vendor Build System [offline / HSM]
+    subgraph VENDOR["Vendor Build System (offline / HSM)"]
         FW[Firmware Image] --> H1[SHA-256 hash]
         H1 --> SIGN[Sign with Private Key]
         SIGN --> SIG[Signature]
     end
-    subgraph Device [on boot]
+    subgraph DEVICE["Device (on boot)"]
         FW2[Firmware Image in flash] --> H2[SHA-256 hash]
         PUB[(Public Key from OTP)] --> VER[Verify]
         SIG2[Signature in image header] --> VER

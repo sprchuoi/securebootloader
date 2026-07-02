@@ -66,7 +66,7 @@ flowchart LR
     subgraph SoC/MCU
         FC[Flash Controller] -->|on-the-fly decrypt + auth| BUS[Execution Bus]
         BUS --> CPU
-        KEY[(Flash Encryption Key\nderived from OTP/PUF)] --> FC
+        KEY[(Flash Encryption Key<br/>derived from OTP/PUF)] --> FC
         RDP[(RDP Lock Fuse)] -.gates.-> DBG[Debug Port]
     end
     ENC -->|SPI/QSPI, physically probeable| FC

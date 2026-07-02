@@ -1244,37 +1244,36 @@ PKA) — verifying on every boot must be fast enough not to hurt UX.</p>
 <h2 id="big-picture-why-when-and-which-model-is-implemented">Big picture — why, when, and which model is implemented<a class="headerlink" href="#big-picture-why-when-and-which-model-is-implemented" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
     subgraph DEV["Development / Release (offline)"]
-        BLD[Build firmware]
-        HASH[Hash image (SHA-256)]
-        SIGN{Need authenticity?}
-        CONF{Need confidentiality?}
-        MACQ{Symmetric-only device fleet?}
+        BLD["Build firmware"]
+        HASH["Hash image (SHA-256)"]
+        SIGN{"Need authenticity?"}
+        MACQ{"Symmetric-only device fleet?"}
+        CONF{"Need confidentiality?"}
     end
 
     subgraph FACTORY["Factory provisioning (once per device)"]
-        OTP[Provision trust anchor in OTP/eFuse]
-        SYM[Optionally provision per-device AES key]
+        OTP["Provision trust anchor in OTP / eFuse"]
+        SYM["Optionally provision per-device AES key"]
     end
 
     subgraph FIELD["In-field boot / OTA (every boot)"]
-        VERIFY[Verify signature or MAC]
-        DEC[Decrypt image if encrypted]
-        BOOT[Allow boot only if checks pass]
+        VERIFY["Verify signature or MAC"]
+        DEC["Decrypt image if encrypted"]
+        BOOT["Allow boot only if checks pass"]
     end
 
     BLD --&gt; HASH --&gt; SIGN
-    SIGN --&gt;|Yes, public-key model| ASYM[Implement RSA or ECDSA signature]
-    SIGN --&gt;|No| MACQ
-    MACQ --&gt;|Closed symmetric system| CM[Implement AES-CMAC]
-    MACQ --&gt;|Open ecosystem / long-term update| ASYM
-    CONF --&gt;|Yes| CBC[Implement AES-CBC/CTR/GCM encryption]
-    CONF --&gt;|No| SKIP[Skip encryption]
-    ASYM --&gt; OTP --&gt; VERIFY
-    CM --&gt; SYM --&gt; VERIFY
-    CBC --&gt; DEC
+    SIGN --&gt;|"Yes, public-key model"| ASYM["Implement RSA or ECDSA signature"]
+    SIGN --&gt;|"No"| MACQ
+    MACQ --&gt;|"Closed symmetric system"| CM["Implement AES-CMAC"]
+    MACQ --&gt;|"Open ecosystem / long-term update"| ASYM
+    ASYM --&gt; OTP --&gt; CONF
+    CM --&gt; SYM --&gt; CONF
+    CONF --&gt;|"Yes"| CBC["Implement AES-CBC / CTR / GCM encryption"]
+    CONF --&gt;|"No"| SKIP["Skip encryption"]
+    CBC --&gt; DEC --&gt; VERIFY
     SKIP --&gt; VERIFY
-    VERIFY --&gt; BOOT
-    DEC --&gt; BOOT</code></pre>
+    VERIFY --&gt; BOOT</code></pre>
 <h3 id="why-when-model-mapping">Why / when / model mapping<a class="headerlink" href="#why-when-model-mapping" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -1317,10 +1316,10 @@ key-managed environments.</p>
 boot, vendor signs offline with private exponent <code>d</code>; device verifies
 with public exponent <code>e</code> from OTP/provisioned key material.</p>
 <pre class="mermaid"><code>flowchart LR
-    H[SHA-256 digest] --&gt; PAD[PKCS#1 v1.5 / PSS padding]
-    PAD --&gt; SIGN[Signature = m^d mod n]
-    SIGN --&gt; IMG[Signature stored in image header]
-    IMG --&gt; VER[Device computes s^e mod n and checks digest match]</code></pre>
+    H["SHA-256 digest"] --&gt; PAD["PKCS#1 v1.5 / PSS padding"]
+    PAD --&gt; SIGN["Signature = m^d mod n"]
+    SIGN --&gt; IMG["Signature stored in image header"]
+    IMG --&gt; VER["Device computes s^e mod n and checks digest match"]</code></pre>
 <ul>
 <li>Strengths: mature ecosystem, widely available tooling/certs.</li>
 <li>Trade-off: larger key/signature sizes and more RAM/code than ECC.</li>
@@ -1330,12 +1329,12 @@ with public exponent <code>e</code> from OTP/provisioned key material.</p>
 <p>ECDSA signs the hash using an elliptic-curve private key (typically
 P-256 for MCU class devices). Verification uses curve point operations.</p>
 <pre class="mermaid"><code>flowchart LR
-    H2[SHA-256 digest] --&gt; K[Generate nonce k]
-    K --&gt; R[Compute curve point k*G -&gt; r]
-    H2 --&gt; S[Compute s = k^-1(h + r*d) mod n]
+    H2["SHA-256 digest"] --&gt; K["Generate nonce k"]
+    K --&gt; R["Compute curve point k times G to get r"]
+    H2 --&gt; S["Compute s = k^-1 (h + r*d) mod n"]
     R --&gt; SIG["(r, s) signature"]
     S --&gt; SIG
-    SIG --&gt; VERIFY[Device verifies with public key Q on curve]</code></pre>
+    SIG --&gt; VERIFY["Device verifies with public key Q on curve"]</code></pre>
 <ul>
 <li>Strengths: much smaller keys/signatures than RSA for similar security.</li>
 <li>Trade-off: needs strong nonce generation; bad nonce reuse leaks private key.</li>
@@ -1345,14 +1344,14 @@ P-256 for MCU class devices). Verification uses curve point operations.</p>
 <p>AES-CBC encrypts firmware for confidentiality (IP protection). Each
 ciphertext block depends on the previous block plus IV.</p>
 <pre class="mermaid"><code>flowchart LR
-    IV[IV] --&gt; X1[XOR with P1]
-    P1[Plain block 1] --&gt; X1
-    X1 --&gt; E1[AES-Encrypt with key K]
-    E1 --&gt; C1[Cipher block 1]
-    C1 --&gt; X2[XOR with P2]
-    P2[Plain block 2] --&gt; X2
-    X2 --&gt; E2[AES-Encrypt with key K]
-    E2 --&gt; C2[Cipher block 2]</code></pre>
+    IV["IV"] --&gt; X1["XOR with P1"]
+    P1["Plain block 1"] --&gt; X1
+    X1 --&gt; E1["AES-Encrypt with key K"]
+    E1 --&gt; C1["Cipher block 1"]
+    C1 --&gt; X2["XOR with P2"]
+    P2["Plain block 2"] --&gt; X2
+    X2 --&gt; E2["AES-Encrypt with key K"]
+    E2 --&gt; C2["Cipher block 2"]</code></pre>
 <ul>
 <li>Strengths: simple, hardware-accelerated on many MCUs.</li>
 <li>Critical limitation: <strong>CBC gives confidentiality only</strong>, not authenticity.</li>
@@ -1363,14 +1362,14 @@ ciphertext block depends on the previous block plus IV.</p>
 <p>AES-CMAC computes an authentication tag from firmware blocks using AES.
 It proves integrity/authenticity to anyone with the same secret key.</p>
 <pre class="mermaid"><code>flowchart LR
-    B1[Block 1] --&gt; C1[Chaining state]
-    C1 --&gt; A1[AES(K, state)]
-    B2[Block 2] --&gt; C2[Next XOR + chain]
+    B1["Block 1"] --&gt; C1["Chaining state"]
+    C1 --&gt; A1["AES(K, state)"]
+    B2["Block 2"] --&gt; C2["Next XOR + chain"]
     A1 --&gt; C2
-    C2 --&gt; A2[AES(K, state)]
-    LAST[Last block + subkey K1/K2] --&gt; T[AES(K, final state)]
+    C2 --&gt; A2["AES(K, state)"]
+    LAST["Last block + subkey K1/K2"] --&gt; T["AES(K, final state)"]
     A2 --&gt; LAST
-    T --&gt; TAG[CMAC tag]</code></pre>
+    T --&gt; TAG["CMAC tag"]</code></pre>
 <ul>
 <li>Strengths: lightweight authentication when both ends share a secret.</li>
 <li>Trade-off: symmetric key must exist on device; extracting one key can

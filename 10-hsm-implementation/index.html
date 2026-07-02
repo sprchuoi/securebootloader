@@ -642,6 +642,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#fips-140-2-fips-140-3-what-the-certification-actually-means" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIPS 140-2 / FIPS 140-3 — what the certification actually means
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#the-signing-station-architecture" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1074,6 +1085,79 @@ that:
   <strong>audit logging</strong> of every operation.
 - Is certified to standards like <strong>FIPS 140-2/3 Level 3+</strong> or
   <strong>Common Criteria</strong> for high-assurance deployments.</p>
+<h3 id="fips-140-2-fips-140-3-what-the-certification-actually-means">FIPS 140-2 / FIPS 140-3 — what the certification actually means<a class="headerlink" href="#fips-140-2-fips-140-3-what-the-certification-actually-means" title="Permanent link">&para;</a></h3>
+<p><strong>FIPS 140</strong> (Federal Information Processing Standard 140) is the US
+NIST standard that defines security requirements for <strong>cryptographic
+modules</strong> — it's the standard an HSM vendor submits their product
+against for independent lab testing (via NIST's <strong>CMVP</strong>, Cryptographic
+Module Validation Program). <strong>FIPS 140-3</strong> is the current revision
+(adopted 2019, supersedes FIPS 140-2; FIPS 140-2 certs remain valid
+until they expire but new submissions are 140-3 only since 2021).
+It's built on the international standard <strong>ISO/IEC 19790</strong>.</p>
+<p>The standard defines <strong>4 increasing Security Levels</strong> — the level number
+you see quoted (e.g., "FIPS 140-2 Level 3") tells you <em>how</em> the module
+protects keys, not just <em>that</em> it does:</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Physical security requirement</th>
+<th>Typical implementation</th>
+<th>Where you'd see it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>Basic — production-grade components, no tamper mechanisms required</td>
+<td>Software crypto libraries (e.g., OpenSSL FIPS module) running on general-purpose hardware</td>
+<td>Software-only crypto in non-hostile environments</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>Adds <strong>tamper-evidence</strong> (seals/coatings that show visible evidence of physical access attempts) + role-based authentication</td>
+<td>Basic hardware crypto tokens, entry-level HSM cards</td>
+<td>Lower-assurance embedded secure elements</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>Adds <strong>tamper-<em>resistance</em></strong> (physical barriers actively resisting intrusion) + <strong>identity-based authentication</strong> + <strong>zeroization</strong> of keys on detected tampering</td>
+<td>Most commercial HSMs used for root/CA key ceremonies (Thales Luna, Entrust nShield, AWS/Azure CloudHSM)</td>
+<td><strong>This folder's "Root HSM" and "Signing HSM"</strong></td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>Adds <strong>environmental protection</strong> — detects and reacts to voltage/temperature attacks, full tamper-<em>detection-and-response</em> envelope around the whole module</td>
+<td>Highest-assurance modules for extreme-threat environments (e.g., some payment/military HSMs)</td>
+<td>PCI HSM–certified payment HSMs, some automotive-grade root-of-trust silicon</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How this maps onto the "Signing Station" in this folder:</strong>
+- The <strong>Root HSM</strong> (air-gapped, rarely used, protects the highest-value
+  key) should be <strong>FIPS 140-2/3 Level 3 minimum</strong>, often Level 4 for
+  regulated industries (payment, government) — physical tamper
+  resistance matters most here because a compromise is catastrophic and
+  hard to detect quickly.
+- The <strong>Signing HSM</strong> (networked, used constantly) is typically
+  <strong>Level 3</strong> — the module itself resists physical tampering and
+  zeroizes keys if breached, while network-layer controls (auth API,
+  access control, audit log — see below) handle the <em>logical</em> attack
+  surface that physical certification doesn't cover.
+- <strong>What FIPS validation does NOT cover</strong>: it certifies the
+  <em>cryptographic module's</em> physical/logical boundary and algorithm
+  correctness — it says nothing about your <strong>key ceremony process</strong>,
+  <strong>quorum policy</strong>, or <strong>CI/CD access control</strong>. Those are your
+  responsibility to design correctly (this is exactly what the rest of
+  this folder covers).
+- <strong>Algorithm-level FIPS standards</strong> referenced <em>inside</em> a FIPS 140
+  validated module: <strong>FIPS 186-5</strong> (Digital Signature Standard — RSA/
+  ECDSA/EdDSA), <strong>FIPS 180-4</strong> (Secure Hash Standard — SHA-2 family),
+  <strong>FIPS 197</strong> (AES). A Level 3 HSM is validated to <em>contain and
+  correctly execute</em> these algorithm standards inside its tamper-
+  resistant boundary — the level is about <em>how well protected</em> the
+  execution is, the algorithm standard is about <em>whether the math is
+  correct</em>.</p>
 <h3 id="the-signing-station-architecture">The "Signing Station" architecture<a class="headerlink" href="#the-signing-station-architecture" title="Permanent link">&para;</a></h3>
 <p>A production-grade firmware signing setup typically looks like:</p>
 <pre class="mermaid"><code>flowchart TD
@@ -1188,11 +1272,18 @@ that:
       networked (tie back to folder 03's CA hierarchy)?</li>
 <li>[ ] What audit information should be logged for every signing
       operation, and why does that matter for incident response?</li>
+<li>[ ] What's the difference between FIPS 140-2 Level 3 and Level 4, and
+      why would the Root HSM justify a higher level than the Signing HSM?</li>
+<li>[ ] Why doesn't a FIPS 140-3 certificate alone guarantee your key
+      ceremony process or CI access control is secure?</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
-<p><code>resources/references.md</code> → FIPS 140-3 (HSM security requirements),
-PCI PIN Security / PCI HSM standards (real-world key ceremony practices),
-vendor HSM docs (Thales Luna, AWS CloudHSM, Entrust nShield).</p>
+<p><code>resources/references.md</code> → FIPS 140-2/140-3 (Security Requirements for
+Cryptographic Modules, NIST CMVP), ISO/IEC 19790 (international basis for
+FIPS 140-3), FIPS 186-5 (digital signature algorithms used inside
+validated modules), FIPS 180-4 (SHA-2), FIPS 197 (AES), PCI PIN Security /
+PCI HSM standards (real-world key ceremony practices), vendor HSM docs
+(Thales Luna, AWS CloudHSM, Entrust nShield).</p>
 
 
 

@@ -853,6 +853,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="17-open-source-bootloaders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17 · Open-Source Bootloaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -868,10 +895,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
         
           
-          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
             
   
   
@@ -889,8 +916,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_19">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1007,6 +1034,7 @@ Firmware, HLOS such as Linux/Android).</p>
 ├── 14-attacks-mitigations/         # Glitching, downgrade, TOCTOU, known CVEs
 ├── 15-practical-labs/              # Hands-on: build a toy secure boot verifier
 ├── 16-standards-by-domain/         # ISO 21434, PSA Certified, PCI HSM, UEFI, etc. per industry
+├── 17-open-source-bootloaders/     # U-Boot, MCUboot, Zephyr, FreeRTOS, TF-A/OP-TEE integration
 └── resources/                      # Glossary + external references
 </code></pre></div>
 <h2 id="recommended-study-sequence">Recommended Study Sequence<a class="headerlink" href="#recommended-study-sequence" title="Permanent link">&para;</a></h2>
@@ -1033,7 +1061,8 @@ showing the concept flow, plus pseudo-code and a checklist.</p>
     CA --&gt; SSL
     SSL --&gt; J[14 Attacks &amp; Mitigations]
     J --&gt; K[15 Practical Labs]
-    K --&gt; ST[16 Standards by Domain]</code></pre>
+    K --&gt; ST[16 Standards by Domain]
+    K --&gt; OSS[17 Open-Source Bootloaders]</code></pre>
 <h3 id="concept-map-how-the-new-topics-relate-to-the-core-chain">Concept map — how the new topics relate to the core chain<a class="headerlink" href="#concept-map-how-the-new-topics-relate-to-the-core-chain" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>flowchart LR
     subgraph Core Chain
@@ -1047,7 +1076,9 @@ showing the concept flow, plus pseudo-code and a checklist.</p>
     COT --&gt; SOC7[07 SoC Secure Boot]
     SOC7 --&gt;|isolated coprocessor variant| ENC8[08 Secure Enclave]
     ENC8 --&gt;|feeds device-unique keys to| KEY9[09 Key Mgmt &amp; Provisioning]
-    KEY9 --&gt;|keys signed/managed via| HSM10</code></pre>
+    KEY9 --&gt;|keys signed/managed via| HSM10
+    SOC7 --&gt;|reference impl used by| OSS17[17 Open-Source Bootloaders]
+    MCU5 --&gt;|reference impl used by| OSS17</code></pre>
 <h2 id="how-to-use-each-folder">How to use each folder<a class="headerlink" href="#how-to-use-each-folder" title="Permanent link">&para;</a></h2>
 <p>Every folder contains a <code>README.md</code> with:
 1. <strong>Concept</strong> — plain-language explanation

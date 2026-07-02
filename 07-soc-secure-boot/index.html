@@ -604,6 +604,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#full-boot-sequence-from-boot-rom-to-kernel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full boot sequence — from Boot ROM to kernel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tf-a-trusted-board-boot-tbb-the-certificate-based-verification-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TF-A Trusted Board Boot (TBB) — the certificate-based verification detail
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -625,6 +647,17 @@
     <span class="md-ellipsis">
       
         Key differences vs MCU (folder 05)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-open-source-bootloadersoses-plug-into-this-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where open-source bootloaders/OSes plug into this chain
       
     </span>
   </a>
@@ -910,6 +943,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../17-open-source-bootloaders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17 · Open-Source Bootloaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -925,10 +985,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
         
           
-          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
             
   
   
@@ -946,8 +1006,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_19">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1172,6 +1232,7 @@ to do a crypto operation):</p>
         TEE-&gt;&gt;Mon: Return result (e.g., signed blob, decrypted key)
     end
     Mon-&gt;&gt;NS: Return result via SMC return registers</code></pre>
+<h3 id="full-boot-sequence-from-boot-rom-to-kernel">Full boot sequence — from Boot ROM to kernel<a class="headerlink" href="#full-boot-sequence-from-boot-rom-to-kernel" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>sequenceDiagram
     participant ROM as BL1 (Boot ROM, immutable)
     participant OTP as OTP Root Key Hash
@@ -1189,6 +1250,43 @@ to do a crypto operation):</p>
     BL31-&gt;&gt;BL33: Hand off to Non-Secure world
     BL33-&gt;&gt;Kernel: Verify (signed kernel / dm-verity) &amp; boot
     Kernel-&gt;&gt;Kernel: Verified boot continues (rootfs via dm-verity)</code></pre>
+<h3 id="tf-a-trusted-board-boot-tbb-the-certificate-based-verification-detail">TF-A Trusted Board Boot (TBB) — the certificate-based verification detail<a class="headerlink" href="#tf-a-trusted-board-boot-tbb-the-certificate-based-verification-detail" title="Permanent link">&para;</a></h3>
+<p>TF-A's reference secure boot flow ("Trusted Board Boot") is built entirely
+on the <strong>X.509 certificate chain model</strong> from folder 03, with TF-A-specific
+certificate roles:</p>
+<table>
+<thead>
+<tr>
+<th>Certificate</th>
+<th>Signed by</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ROTPK</strong> (Root Of Trust Public Key)</td>
+<td>N/A — hash lives in OTP/eFuse</td>
+<td>Anchors the entire TBB chain</td>
+</tr>
+<tr>
+<td><strong>Key certificates</strong></td>
+<td>ROTPK (or a "trusted key" cert)</td>
+<td>Authorize a specific <em>content</em> certificate's public key (separates "who can sign a key" from "who can sign an image")</td>
+</tr>
+<tr>
+<td><strong>Content certificates</strong></td>
+<td>Corresponding key cert's key</td>
+<td>Bind a specific image's <em>hash</em> (SHA-256) to the chain — one per BL3x image</td>
+</tr>
+</tbody>
+</table>
+<p>This 2-level "key cert → content cert" split lets TF-A rotate the actual
+image-signing key without re-issuing the top-level ROTPK-anchored cert,
+mirroring folder 03's Root/Intermediate/Leaf pattern almost exactly.</p>
+<pre class="mermaid"><code>flowchart TD
+    OTP[(OTP: ROTPK hash)] --&gt; KeyCert[BL3x Key Certificate]
+    KeyCert --&gt; ContentCert[BL3x Content Certificate\nbinds image hash]
+    ContentCert --&gt; Image[Actual BL31/BL32/BL33 image]</code></pre>
 <h2 id="pseudo-code-bl2-verifying-multiple-next-stage-images">Pseudo-code — BL2 verifying multiple next-stage images<a class="headerlink" href="#pseudo-code-bl2-verifying-multiple-next-stage-images" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">IMG_BL31</span><span class="p">,</span><span class="w"> </span><span class="n">IMG_BL32</span><span class="p">,</span><span class="w"> </span><span class="n">IMG_BL33</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">image_id_t</span><span class="p">;</span>
 
@@ -1255,6 +1353,30 @@ to do a crypto operation):</p>
 </tr>
 </tbody>
 </table>
+<h2 id="where-open-source-bootloadersoses-plug-into-this-chain">Where open-source bootloaders/OSes plug into this chain<a class="headerlink" href="#where-open-source-bootloadersoses-plug-into-this-chain" title="Permanent link">&para;</a></h2>
+<p>TF-A defines stages, but <strong>doesn't implement BL33 or the OS itself</strong> —
+those are almost always open-source projects. See folder 17 for the full
+comparison, but the short version:</p>
+<ul>
+<li><strong>BL33 slot</strong> is most commonly <strong>U-Boot</strong> (compiled with <code>CONFIG_TFABOOT</code>
+  or as a UEFI payload) — U-Boot then loads and verifies the Linux
+  kernel (<code>FIT</code> image signature) before jumping to it.</li>
+<li>On smaller Cortex-A/Cortex-R SoCs without a rich OS, BL33 (or even
+  BL32) can instead be <strong>Zephyr</strong> or <strong>FreeRTOS</strong> directly — e.g., a
+  safety-island core running Zephyr as a secondary OS alongside Linux
+  on the main cores.</li>
+<li><strong>OP-TEE</strong> (folder 07's BL32 slot) is itself open source and is the de
+  facto reference Trusted OS used with TF-A.</li>
+</ul>
+<pre class="mermaid"><code>flowchart LR
+    BL2 --&gt;|verifies| BL31[BL31: TF-A Secure Monitor]
+    BL31 --&gt;|verifies + jumps| BL33
+    subgraph BL33 slot - Non-Secure world bootloader
+        UBOOT[U-Boot] --&gt;|verifies FIT image| Linux[Linux Kernel]
+        ZEPHYR[Zephyr as BL33 or app core OS]
+        FREERTOS[FreeRTOS as BL33 or app core OS]
+    end
+    BL31 --&gt;|optional| BL32[BL32: OP-TEE Trusted OS]</code></pre>
 <h2 id="checklist">Checklist<a class="headerlink" href="#checklist" title="Permanent link">&para;</a></h2>
 <ul>
 <li>[ ] Name the 5 canonical TF-A boot stages and what each does.</li>
@@ -1269,12 +1391,18 @@ to do a crypto operation):</p>
       needing (hint: a filesystem)?</li>
 <li>[ ] Give an example of a runtime SMC call and trace which component
       handles it.</li>
+<li>[ ] Why does TF-A separate "key certificates" from "content
+      certificates" instead of signing images directly with the ROTPK?</li>
+<li>[ ] Which open-source project typically occupies the BL33 slot, and
+      what does it verify before handing off to the kernel?</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
 <p><code>resources/references.md</code> → ARM Trusted Firmware-A docs (Trusted Board
-Boot design, Firmware Image Package spec), Arm TrustZone technology
-overview, Arm PSCI specification, Arm SPM/FF-A documentation, OP-TEE
-documentation.</p>
+Boot design, Firmware Image Package spec, Trusted Board Boot certificate
+generation tool <code>cert_create</code>), Arm TrustZone technology overview, Arm
+PSCI specification, Arm SPM/FF-A documentation, OP-TEE documentation,
+U-Boot "Verified Boot" documentation. See folder 17 for a deeper
+comparison of U-Boot / Zephyr / FreeRTOS secure boot integration.</p>
 
 
 

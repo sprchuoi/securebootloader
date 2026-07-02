@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://sprchuoi.github.io/securebootloader/10-hsm-implementation/">
+        <link rel="canonical" href="https://sprchuoi.github.io/securebootloader/17-open-source-bootloaders/">
       
       
-        <link rel="prev" href="../09-key-management-provisioning/">
+        <link rel="prev" href="../16-standards-by-domain/">
       
       
-        <link rel="next" href="../11-anti-rollback-versioning/">
+        <link rel="next" href="../resources/glossary/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>10 · HSM Implementation - BootChain — Secure Boot Study (MCU → SoC)</title>
+        <title>17 · Open-Source Bootloaders - BootChain — Secure Boot Study (MCU → SoC)</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#10-hsm-implementation-station" class="md-skip">
+        <a href="#17-open-source-bootloaders-rtos-integration" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              10 · HSM Implementation
+              17 · Open-Source Bootloaders
             
           </span>
         </div>
@@ -556,37 +556,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    10 · HSM Implementation
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../10-hsm-implementation/" class="md-nav__link">
         
   
   
@@ -602,131 +575,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#concept" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Concept
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Concept">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-is-an-hsm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is an HSM?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-signing-station-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The "Signing Station" architecture
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#key-ceremony-basics-root-key-generation-event" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key ceremony basics (Root key generation event)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#day-to-day-signing-station-operation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Day-to-day signing station operation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diagram" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Diagram
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pseudo-code-ci-requesting-a-signature-never-touches-the-private-key" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pseudo-code — CI requesting a signature (never touches the private key)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#checklist" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Checklist
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#further-reading" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Further Reading
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -897,10 +745,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../17-open-source-bootloaders/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17 · Open-Source Bootloaders
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -916,6 +791,198 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concept
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Concept">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-each-project-sits-in-the-boot-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where each project sits in the boot chain
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-u-boot-non-secure-bootloader-bl33-slot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. U-Boot — Non-Secure bootloader (BL33 slot)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. U-Boot — Non-Secure bootloader (BL33 slot)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#u-boot-verified-boot-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        U-Boot Verified Boot mechanisms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#u-boot-verified-boot-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        U-Boot verified boot sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-mcuboot-cortex-m-bootloader-zephyr-freertos-bare-metal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. MCUboot — Cortex-M bootloader (Zephyr / FreeRTOS / bare-metal)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. MCUboot — Cortex-M bootloader (Zephyr / FreeRTOS / bare-metal)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mcuboot-core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCUboot core concepts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcuboot-zephyr-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCUboot + Zephyr integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcuboot-freertos-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCUboot + FreeRTOS integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-tf-a-op-tee-the-soc-secure-world-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. TF-A + OP-TEE — the SoC Secure World stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-table-project-to-folder-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary table — project-to-folder mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pseudo-code-u-boot-style-fit-verification-simplified" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pseudo-code — U-Boot-style FIT verification (simplified)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further Reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1056,130 +1123,278 @@
   
 
 
-<h1 id="10-hsm-implementation-station">10 — HSM Implementation Station<a class="headerlink" href="#10-hsm-implementation-station" title="Permanent link">&para;</a></h1>
+<h1 id="17-open-source-bootloaders-rtos-integration">17 — Open-Source Bootloaders &amp; RTOS Integration<a class="headerlink" href="#17-open-source-bootloaders-rtos-integration" title="Permanent link">&para;</a></h1>
 <h2 id="concept">Concept<a class="headerlink" href="#concept" title="Permanent link">&para;</a></h2>
-<p>Folder 09 explained <em>what</em> keys need to exist and <em>why</em> the root key must
-stay offline. This folder covers the <strong>practical, physical/process
-implementation</strong> of an <strong>HSM-based key ceremony and signing station</strong> —
-the real-world "station" where root/intermediate keys are generated and
-firmware images actually get signed before release.</p>
-<h3 id="what-is-an-hsm">What is an HSM?<a class="headerlink" href="#what-is-an-hsm" title="Permanent link">&para;</a></h3>
-<p>A <strong>Hardware Security Module</strong> is tamper-resistant/tamper-evident hardware
-that:
-- Generates private keys <strong>inside its own secure hardware boundary</strong> —
-  the private key material is never exposed in plaintext outside it.
-- Performs signing/encryption operations internally; callers send data
-  in, get a signature/ciphertext out.
-- Enforces <strong>access control</strong> (PIN/smartcard/quorum authentication) and
-  <strong>audit logging</strong> of every operation.
-- Is certified to standards like <strong>FIPS 140-2/3 Level 3+</strong> or
-  <strong>Common Criteria</strong> for high-assurance deployments.</p>
-<h3 id="the-signing-station-architecture">The "Signing Station" architecture<a class="headerlink" href="#the-signing-station-architecture" title="Permanent link">&para;</a></h3>
-<p>A production-grade firmware signing setup typically looks like:</p>
-<div class="highlight"><pre><span></span><code>[Air-gapped room / vault]
-   Root HSM  ---(generates &amp; holds)---&gt;  Root Private Key (NEVER exported)
-        |
-        | (M-of-N quorum: e.g. 3-of-5 officers with smartcards)
-        v
-   Root Key Ceremony (witnessed, recorded, audited)
-        |
-        v
-   Signs: Intermediate CA cert  ---&gt; exported to networked Signing HSM
-
-[Networked, access-controlled signing service]
-   Signing HSM  ---(holds)---&gt;  Intermediate/Release signing key
-        |
-        | (Build system submits firmware hash via authenticated API)
-        v
-   Returns: signature  ---&gt;  attached to firmware image ---&gt;  released
-</code></pre></div>
-<h3 id="key-ceremony-basics-root-key-generation-event">Key ceremony basics (Root key generation event)<a class="headerlink" href="#key-ceremony-basics-root-key-generation-event" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Conducted in a <strong>controlled, witnessed environment</strong> (often recorded
-  on video, with an independent auditor present).</li>
-<li>Uses <strong>M-of-N access control</strong> (e.g., quorum of 3 out of 5 authorized
-  officers, each holding a smartcard/token) so no single person can
-  extract or misuse the root key.</li>
-<li>Produces a signed <strong>ceremony script/log</strong> as a compliance artifact.</li>
-<li>The HSM itself may be <strong>cloned/backed up</strong> into a redundant unit using
-  the HSM's own secure key-wrapping mechanism (key material still never
-  appears in plaintext outside HSM boundaries), for disaster recovery.</li>
-</ul>
-<h3 id="day-to-day-signing-station-operation">Day-to-day signing station operation<a class="headerlink" href="#day-to-day-signing-station-operation" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Root HSM</strong>: stays offline/air-gapped, used <em>rarely</em> (e.g., only to
-  issue/renew Intermediate CA certs, maybe yearly).</li>
-<li><strong>Signing HSM(s)</strong>: networked but access-controlled, used <em>frequently</em>
-  by the CI/build pipeline to sign each firmware release with the
-  Intermediate/Release key.</li>
-<li><strong>Least privilege</strong>: build engineers can <em>request</em> a signature via an
-  authenticated API/service; they never get direct HSM admin access.</li>
-<li><strong>Audit trail</strong>: every signing operation logged (who/what/when/which
-  image hash) for traceability and incident response.</li>
-</ul>
-<h2 id="diagram">Diagram<a class="headerlink" href="#diagram" title="Permanent link">&para;</a></h2>
+<p>Folders 01-16 describe secure boot <em>mechanisms</em> generically (or via TF-A
+for Cortex-A). In practice, very few teams write a bootloader from
+scratch — most projects assemble a secure boot chain from <strong>existing
+open-source components</strong>. This folder maps the concepts you've already
+learned onto the specific open-source projects you'll actually touch:
+<strong>U-Boot, Zephyr, FreeRTOS (+ MCUboot), and TF-A/OP-TEE</strong>.</p>
+<h3 id="where-each-project-sits-in-the-boot-chain">Where each project sits in the boot chain<a class="headerlink" href="#where-each-project-sits-in-the-boot-chain" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>flowchart TD
-    subgraph AirGapped [Air-Gapped Vault]
-        RootHSM[Root HSM]
-        Officers[M-of-N Officers with Smartcards]
-        Officers --&gt;|quorum auth| RootHSM
-    end
-    subgraph Networked [Access-Controlled Signing Environment]
-        SignHSM[Signing HSM: Intermediate/Release Key]
-        API[Authenticated Signing API]
-        CI[CI/Build Pipeline]
-    end
-    RootHSM --&gt;|signs, rarely| ICACert[Intermediate CA Certificate]
-    ICACert --&gt; SignHSM
-    CI --&gt;|submit image hash| API --&gt; SignHSM
-    SignHSM --&gt;|returns signature| CI
-    CI --&gt; Release[Signed Firmware Release]</code></pre>
+    ROM[Boot ROM / BL1 - vendor immutable] --&gt; TFA[TF-A: BL2/BL31/BL32]
+    TFA --&gt;|BL33 slot| UBOOT[U-Boot]
+    TFA --&gt;|BL32 slot, optional| OPTEE[OP-TEE Trusted OS]
+    UBOOT --&gt;|verifies FIT image| LINUX[Linux Kernel]
+    ROM --&gt;|MCU, no TF-A| MCUBOOT[MCUboot bootloader]
+    MCUBOOT --&gt;|verifies app image| ZEPHYR[Zephyr RTOS]
+    MCUBOOT --&gt;|verifies app image| FREERTOS[FreeRTOS]</code></pre>
+<ul>
+<li><strong>TF-A (folder 07)</strong> is the SoC/Cortex-A reference secure-boot
+  firmware. It doesn't include BL33 or the OS — those are supplied by
+  another project (usually U-Boot, or an RTOS on a secondary core).</li>
+<li><strong>U-Boot</strong> is the most common <strong>BL33</strong> occupant: a full Non-Secure
+  bootloader that itself verifies and boots Linux.</li>
+<li><strong>MCUboot</strong> is the Cortex-M equivalent of "BL2" — a small, standalone
+  bootloader whose entire job is signature verification + image-slot
+  management (folder 05's dual-bank concept), independent of TF-A.</li>
+<li><strong>Zephyr</strong> and <strong>FreeRTOS</strong> are the RTOS payloads MCUboot verifies and
+  boots; they can also run as a secondary/safety-island OS on
+  bigger SoCs.</li>
+</ul>
+<h2 id="1-u-boot-non-secure-bootloader-bl33-slot">1. U-Boot — Non-Secure bootloader (BL33 slot)<a class="headerlink" href="#1-u-boot-non-secure-bootloader-bl33-slot" title="Permanent link">&para;</a></h2>
+<p>U-Boot is normally the <strong>BL33</strong> stage handed off by TF-A's Secure Monitor
+(folder 07). Its job: initialize peripherals the OS needs (not already
+done by BL2), load the kernel image, <strong>verify it</strong>, then jump.</p>
+<h3 id="u-boot-verified-boot-mechanisms">U-Boot Verified Boot mechanisms<a class="headerlink" href="#u-boot-verified-boot-mechanisms" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>What it verifies</th>
+<th>Config</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FIT image signing</strong></td>
+<td>RSA/ECDSA signature over a Flattened Image Tree (kernel + DT + initramfs bundle)</td>
+<td><code>CONFIG_FIT_SIGNATURE</code></td>
+</tr>
+<tr>
+<td><strong><code>verify-bootloader</code></strong></td>
+<td>U-Boot itself can be verified by the prior stage (BL2/SPL) before it runs</td>
+<td><code>CONFIG_SPL_FIT_SIGNATURE</code></td>
+</tr>
+<tr>
+<td><strong>U-Boot environment lock</strong></td>
+<td>Prevents runtime tampering with boot arguments (e.g., disabling <code>console=</code>, forcing verified paths)</td>
+<td><code>CONFIG_ENV_IS_NOWHERE</code> / lock envs</td>
+</tr>
+<tr>
+<td><strong><code>CONFIG_TFABOOT</code></strong></td>
+<td>Boots U-Boot as BL33 under TF-A, inheriting TF-A's verified-boot chain (folder 07)</td>
+<td>build-time</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>FIT image (.itb)
+├── kernel@1        (Linux kernel binary)
+├── fdt@1           (device tree)
+├── ramdisk@1       (initramfs, optional)
+└── signature@1     (RSA/ECDSA sig over hashes of the above, verified against
+                      a public key compiled into U-Boot&#39;s own image — itself
+                      already verified by BL2/TF-A)
+</code></pre></div>
+<h3 id="u-boot-verified-boot-sequence">U-Boot verified boot sequence<a class="headerlink" href="#u-boot-verified-boot-sequence" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>sequenceDiagram
-    participant Eng as Build Engineer / CI Pipeline
-    participant API as Authenticated Signing API
-    participant HSM as Signing HSM (Intermediate Key)
-    participant Log as Audit Log
+    participant BL31 as TF-A BL31 (Secure Monitor)
+    participant UB as U-Boot (BL33)
+    participant Flash as Flash: FIT image (.itb)
+    participant Kernel as Linux Kernel
 
-    Eng-&gt;&gt;API: Request signature for firmware_hash (with auth token)
-    API-&gt;&gt;API: Authorize request (role/policy check)
-    API-&gt;&gt;HSM: Forward hash to HSM for signing
-    HSM-&gt;&gt;HSM: Sign internally (private key never leaves HSM)
-    HSM-&gt;&gt;API: Return signature
-    API-&gt;&gt;Log: Record who/what/when/hash (immutable audit entry)
-    API-&gt;&gt;Eng: Return signature to attach to release artifact</code></pre>
-<h2 id="pseudo-code-ci-requesting-a-signature-never-touches-the-private-key">Pseudo-code — CI requesting a signature (never touches the private key)<a class="headerlink" href="#pseudo-code-ci-requesting-a-signature-never-touches-the-private-key" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="cm">/* Build pipeline side -- has NO access to private key material */</span>
-<span class="kt">int</span><span class="w"> </span><span class="nf">ci_request_signature</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">image_hash</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span>
-<span class="w">                          </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sig_out</span><span class="p">[</span><span class="mi">64</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">signing_api_request_t</span><span class="w"> </span><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="p">.</span><span class="n">hash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">.</span><span class="n">auth_token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_ci_service_token</span><span class="p">(),</span>
-<span class="w">    </span><span class="p">};</span>
-<span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="n">image_hash</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+    BL31-&gt;&gt;UB: Hand off (already verified by BL2 as part of FIP, folder 07)
+    UB-&gt;&gt;Flash: Read FIT image (kernel+dtb+ramdisk+signature)
+    UB-&gt;&gt;UB: Verify FIT signature against embedded public key
+    alt Valid
+        UB-&gt;&gt;Kernel: Jump to verified kernel
+    else Invalid
+        UB-&gt;&gt;UB: Abort boot / drop to recovery console
+    end</code></pre>
+<h2 id="2-mcuboot-cortex-m-bootloader-zephyr-freertos-bare-metal">2. MCUboot — Cortex-M bootloader (Zephyr / FreeRTOS / bare-metal)<a class="headerlink" href="#2-mcuboot-cortex-m-bootloader-zephyr-freertos-bare-metal" title="Permanent link">&para;</a></h2>
+<p><strong>MCUboot</strong> is a standalone, RTOS-agnostic secure bootloader purpose-built
+for constrained MCUs. It implements exactly the pattern from folder 05
+(dual-bank / A-B image, signature verification, anti-rollback) as a
+reusable open-source component instead of custom vendor code.</p>
+<h3 id="mcuboot-core-concepts">MCUboot core concepts<a class="headerlink" href="#mcuboot-core-concepts" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Image slots</strong>: <code>Primary</code> (active) and <code>Secondary</code> (staged update) —
+  same idea as folder 05's Bank A/Bank B.</li>
+<li><strong>Swap strategies</strong>: <code>swap</code> (safe, reversible — copies via scratch
+  area), <code>overwrite</code> (simpler, no rollback to old image), <code>direct-xip</code>
+  (execute in place from either slot, no copy).</li>
+<li><strong>Signature algorithms</strong>: RSA-2048/3072 or ECDSA P-256, verified via
+  <strong>mbedTLS</strong> or <strong>tinycrypt</strong> — the exact primitives from folder 04.</li>
+<li><strong>Image trailer</strong>: metadata appended after the image (magic number,
+  swap state, image OK flag) that MCUboot uses to track update state
+  across resets — critical for power-loss-safe updates.</li>
+<li><strong>Security counter (<code>security_cnt</code>)</strong>: MCUboot's built-in anti-rollback
+  mechanism (folder 11), stored in a monotonic counter (TF-M NV counters
+  on Cortex-M33, or a dedicated flash region on simpler M0/M3 parts).</li>
+</ul>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Flash
+        PRIMARY[Primary Slot - active image]
+        SECONDARY[Secondary Slot - staged update]
+        SCRATCH[Scratch area - used by swap strategy]
+    end
+    MCUBOOT[MCUboot] --&gt;|verify signature + security_cnt| PRIMARY
+    MCUBOOT --&gt;|verify signature + security_cnt| SECONDARY
+    MCUBOOT --&gt;|on valid update| SCRATCH
+    SCRATCH -.swap.-&gt; PRIMARY</code></pre>
+<h3 id="mcuboot-zephyr-integration">MCUboot + Zephyr integration<a class="headerlink" href="#mcuboot-zephyr-integration" title="Permanent link">&para;</a></h3>
+<p>Zephyr has <strong>first-class MCUboot support</strong> — a Zephyr application is
+built as an MCUboot-compatible image (<code>west build</code> produces a signed
+<code>.bin</code>/<code>.hex</code> via <code>imgtool</code>), and Zephyr's own DFU/MCUmgr subsystem can
+trigger an update that MCUboot verifies on next reset.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant ROM as Vendor Boot ROM (folder 01)
+    participant MCUboot
+    participant Primary as Primary Slot (Zephyr image)
+    participant Secondary as Secondary Slot (candidate update)
 
-<span class="w">    </span><span class="cm">/* Network call to the signing service fronting the HSM */</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">signing_api_call</span><span class="p">(</span><span class="o">&amp;</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">sig_out</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ERR_SIGNING_FAILED</span><span class="p">;</span>
+    ROM-&gt;&gt;MCUboot: Jump to MCUboot (verified by ROM if TF-M/PSA RoT present)
+    MCUboot-&gt;&gt;Secondary: Check for pending update
+    alt Update pending
+        MCUboot-&gt;&gt;Secondary: Verify signature + security_cnt &gt;= current
+        alt Valid
+            MCUboot-&gt;&gt;Primary: Swap image into Primary slot
+        else Invalid
+            MCUboot-&gt;&gt;MCUboot: Discard update, keep current Primary
+        end
+    end
+    MCUboot-&gt;&gt;Primary: Verify Primary signature
+    MCUboot-&gt;&gt;Primary: Jump to Zephyr entry point</code></pre>
+<h3 id="mcuboot-freertos-integration">MCUboot + FreeRTOS integration<a class="headerlink" href="#mcuboot-freertos-integration" title="Permanent link">&para;</a></h3>
+<p>FreeRTOS doesn't have MCUboot support quite as deeply baked into its
+build system as Zephyr, but the pattern is identical: FreeRTOS is built
+as a plain application image, signed with <code>imgtool</code> (MCUboot's signing
+utility), and flashed into MCUboot's Primary/Secondary slots. FreeRTOS's
+own <strong>OTA Agent library</strong> (in AWS IoT FreeRTOS distributions) handles
+downloading the candidate update into the Secondary slot; MCUboot does
+the actual cryptographic verification on the next boot — a clean
+separation of "who fetches the update" (FreeRTOS OTA Agent) from "who
+verifies and swaps it" (MCUboot), mirroring folder 02's chain-of-trust
+principle of never trusting the fetcher's word alone.</p>
+<h2 id="3-tf-a-op-tee-the-soc-secure-world-stack">3. TF-A + OP-TEE — the SoC Secure World stack<a class="headerlink" href="#3-tf-a-op-tee-the-soc-secure-world-stack" title="Permanent link">&para;</a></h2>
+<p>Folder 07 covered TF-A's BL1/BL2/BL31 stages; <strong>OP-TEE</strong> is the open-source
+project that most commonly fills the <strong>BL32 (Trusted OS)</strong> slot.</p>
+<ul>
+<li><strong>OP-TEE Core</strong> runs at S-EL1, providing a GlobalPlatform TEE-compliant
+  environment for <strong>Trusted Applications (TAs)</strong> — small, isolated secure
+  services (e.g., key storage, DRM, biometric matching — folder 08's
+  Secure Enclave concepts, but implemented in software-isolated TrustZone
+  rather than a separate physical coprocessor).</li>
+<li>OP-TEE TAs are invoked from Normal World via <strong><code>SMC</code> calls routed
+  through BL31</strong> (folder 07's runtime SMC sequence) — a Linux
+  application calls into <code>libteec</code> (TEE Client API), which triggers an
+  SMC, which BL31 forwards to OP-TEE.</li>
+<li>OP-TEE's own <strong>Trusted Board Boot</strong>: OP-TEE itself is a signed BL32
+  image, verified by BL2 via the same key-cert/content-cert TF-A
+  mechanism described in folder 07 — OP-TEE doesn't add a <em>new</em> trust
+  root, it rides on TF-A's existing chain.</li>
+</ul>
+<pre class="mermaid"><code>sequenceDiagram
+    participant App as Linux App (Normal World)
+    participant TEEC as libteec (TEE Client API)
+    participant BL31 as TF-A BL31 (Secure Monitor)
+    participant OPTEE as OP-TEE Core (S-EL1)
+    participant TA as Trusted Application
 
-<span class="w">    </span><span class="cm">/* CI only ever sees the resulting signature, never the key */</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">OK</span><span class="p">;</span>
+    App-&gt;&gt;TEEC: TEEC_InvokeCommand(...)
+    TEEC-&gt;&gt;BL31: SMC call
+    BL31-&gt;&gt;OPTEE: Dispatch to OP-TEE (world switch)
+    OPTEE-&gt;&gt;TA: Route to target Trusted Application
+    TA-&gt;&gt;OPTEE: Perform secure operation (e.g., sign, decrypt)
+    OPTEE-&gt;&gt;BL31: Return result
+    BL31-&gt;&gt;App: SMC return</code></pre>
+<h2 id="summary-table-project-to-folder-mapping">Summary table — project-to-folder mapping<a class="headerlink" href="#summary-table-project-to-folder-mapping" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Open-source project</th>
+<th>Boot chain role</th>
+<th>Folder(s) it implements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TF-A (Trusted Firmware-A)</strong></td>
+<td>BL1/BL2/BL31 reference firmware for Cortex-A</td>
+<td>07</td>
+</tr>
+<tr>
+<td><strong>U-Boot</strong></td>
+<td>BL33 / Non-Secure bootloader, verifies+boots Linux</td>
+<td>02, 04, 07</td>
+</tr>
+<tr>
+<td><strong>OP-TEE</strong></td>
+<td>BL32 Trusted OS, hosts Trusted Applications</td>
+<td>07, 08</td>
+</tr>
+<tr>
+<td><strong>MCUboot</strong></td>
+<td>Cortex-M bootloader: signature verify + A/B slot swap</td>
+<td>04, 05, 11</td>
+</tr>
+<tr>
+<td><strong>Zephyr</strong></td>
+<td>RTOS payload verified by MCUboot; PSA/TF-M integration</td>
+<td>05, 09</td>
+</tr>
+<tr>
+<td><strong>FreeRTOS</strong></td>
+<td>RTOS payload verified by MCUboot; OTA Agent library</td>
+<td>05, 11, 13</td>
+</tr>
+<tr>
+<td><strong>TF-M (Trusted Firmware-M)</strong></td>
+<td>PSA Root of Trust implementation for Armv8-M/TrustZone-M</td>
+<td>03, 05, 09</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pseudo-code-u-boot-style-fit-verification-simplified">Pseudo-code — U-Boot-style FIT verification (simplified)<a class="headerlink" href="#pseudo-code-u-boot-style-fit-verification-simplified" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="cm">/* Roughly mirrors U-Boot&#39;s image-fit.c verification flow */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">fit_verify_and_boot</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">fit</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">conf_name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pubkey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uboot_embedded_pubkey</span><span class="p">();</span><span class="w">   </span><span class="cm">/* compiled into U-Boot */</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">fit_config_exists</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span><span class="w"> </span><span class="n">conf_name</span><span class="p">))</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="n">ENOENT</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Each component (kernel, fdt, ramdisk) has its own hash node,</span>
+<span class="cm">       all covered by one signature over the configuration node */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">fit_config_verify_signature</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span><span class="w"> </span><span class="n">conf_name</span><span class="p">,</span><span class="w"> </span><span class="n">pubkey</span><span class="p">))</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="n">EBADMSG</span><span class="p">;</span><span class="w">                              </span><span class="cm">/* tampered/untrusted */</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">kernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fit_get_component</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span><span class="w"> </span><span class="n">conf_name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;kernel&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">fdt</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">fit_get_component</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span><span class="w"> </span><span class="n">conf_name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;fdt&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">boot_jump_linux</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span><span class="w"> </span><span class="n">fdt</span><span class="p">);</span><span class="w">                       </span><span class="cm">/* only after verify */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="cm">/* unreachable */</span>
 <span class="p">}</span>
 </code></pre></div>
 <h2 id="checklist">Checklist<a class="headerlink" href="#checklist" title="Permanent link">&para;</a></h2>
 <ul>
-<li>[ ] What does "the private key never leaves the HSM boundary" actually
-      guarantee, and what does it NOT guarantee (e.g., misuse via a
-      valid but malicious signing request)?</li>
-<li>[ ] Why use M-of-N quorum authorization for the Root key ceremony
-      instead of a single administrator?</li>
-<li>[ ] Why keep the Root HSM air-gapped while the Signing HSM stays
-      networked (tie back to folder 03's CA hierarchy)?</li>
-<li>[ ] What audit information should be logged for every signing
-      operation, and why does that matter for incident response?</li>
+<li>[ ] Which project typically occupies TF-A's BL33 slot, and what does
+      it verify before booting Linux?</li>
+<li>[ ] What problem does MCUboot's "swap" strategy solve that
+      "overwrite" does not?</li>
+<li>[ ] Why is FreeRTOS's OTA Agent kept separate from MCUboot's
+      verification logic — what security principle does that separation
+      reflect (hint: folder 02)?</li>
+<li>[ ] How does OP-TEE reuse TF-A's existing trust chain instead of
+      creating its own root of trust?</li>
+<li>[ ] For a new Cortex-M33 IoT project, which two open-source projects
+      would you combine to reach PSA Certified Level 1 (hint: folder 16)?</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
-<p><code>resources/references.md</code> → FIPS 140-3 (HSM security requirements),
-PCI PIN Security / PCI HSM standards (real-world key ceremony practices),
-vendor HSM docs (Thales Luna, AWS CloudHSM, Entrust nShield).</p>
+<p><code>resources/references.md</code> → U-Boot Verified Boot documentation, MCUboot
+design documents (<code>docs/design.md</code> in the MCUboot repo), Zephyr Project
+"DFU and MCUboot" documentation, FreeRTOS OTA documentation, OP-TEE
+documentation, Trusted Firmware-M (TF-M) documentation.</p>
 
 
 
@@ -1215,7 +1430,7 @@ vendor HSM docs (Thales Luna, AWS CloudHSM, Entrust nShield).</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../09-key-management-provisioning/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 09 · Key Management &amp; Provisioning">
+          <a href="../16-standards-by-domain/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 16 · Standards by Domain">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1225,20 +1440,20 @@ vendor HSM docs (Thales Luna, AWS CloudHSM, Entrust nShield).</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                09 · Key Management & Provisioning
+                16 · Standards by Domain
               </div>
             </div>
           </a>
         
         
           
-          <a href="../11-anti-rollback-versioning/" class="md-footer__link md-footer__link--next" aria-label="Next: 11 · Anti-Rollback &amp; Versioning">
+          <a href="../resources/glossary/" class="md-footer__link md-footer__link--next" aria-label="Next: Glossary">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                11 · Anti-Rollback & Versioning
+                Glossary
               </div>
             </div>
             <div class="md-footer__button md-icon">

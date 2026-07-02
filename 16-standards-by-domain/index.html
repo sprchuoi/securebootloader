@@ -16,7 +16,7 @@
         <link rel="prev" href="../15-practical-labs/">
       
       
-        <link rel="next" href="../resources/glossary/">
+        <link rel="next" href="../17-open-source-bootloaders/">
       
       
         
@@ -800,16 +800,22 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-mobile-consumer-electronics" class="md-nav__link">
+    <nav class="md-nav" aria-label="1. Automotive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uds-iso-14229-and-its-relationship-to-secure-boot" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Mobile / Consumer Electronics
+        UDS (ISO 14229) and its relationship to secure boot
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -821,6 +827,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="3. IoT / Embedded">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#open-source-rtos-secure-boot-in-iot-see-folder-17-for-full-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open-source RTOS secure boot in IoT (see folder 17 for full detail)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -893,6 +916,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../17-open-source-bootloaders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17 · Open-Source Bootloaders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -908,10 +958,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
         
           
-          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
             
   
   
@@ -929,8 +979,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_19">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1031,9 +1081,9 @@ schemes, and mandatory requirements</strong> on top of these generic secure boot
 concepts. This folder maps the generic concepts to the standards you'll
 actually be asked to comply with, per domain.</p>
 <pre class="mermaid"><code>flowchart TD
-    Generic[Generic Secure Boot Concepts\n00-15] --&gt; Auto[Automotive]
+    Generic[Generic Secure Boot Concepts\n00-15] --&gt; Auto[Automotive\n+ UDS ISO 14229]
     Generic --&gt; Mobile[Mobile / Consumer]
-    Generic --&gt; IoT[IoT / Embedded]
+    Generic --&gt; IoT[IoT / Embedded\n+ MCUboot/Zephyr/FreeRTOS]
     Generic --&gt; Pay[Payment]
     Generic --&gt; Cloud[Server / Cloud]</code></pre>
 <hr />
@@ -1072,13 +1122,102 @@ actually be asked to comply with, per domain.</p>
 <td>Automotive-specific HSM classification for in-ECU hardware security modules</td>
 <td>09, 10</td>
 </tr>
+<tr>
+<td><strong>ISO 14229 (UDS)</strong></td>
+<td>Unified Diagnostic Services — the protocol used to reprogram ECUs (flash firmware) and gate access via Security Access (seed/key), directly interacting with secure boot</td>
+<td>05, 09, 11</td>
+</tr>
+<tr>
+<td><strong>ISO 15118</strong></td>
+<td>EV charging communication — includes a full PKI (Contract/OEM certificates) for charging authorization, another applied instance of folder 03's CA hierarchy</td>
+<td>03, 13</td>
+</tr>
 </tbody>
 </table>
 <p><strong>Practical note:</strong> automotive ECUs are essentially the <strong>MCU secure
 boot</strong> model (folder 05) multiplied across dozens of ECUs per vehicle,
 each needing its own key hierarchy (folder 03) and secure OTA update
 path (folder 13) coordinated at the vehicle/fleet level.</p>
-<h2 id="2-mobile-consumer-electronics">2. Mobile / Consumer Electronics<a class="headerlink" href="#2-mobile-consumer-electronics" title="Permanent link">&para;</a></h2>
+<h3 id="uds-iso-14229-and-its-relationship-to-secure-boot">UDS (ISO 14229) and its relationship to secure boot<a class="headerlink" href="#uds-iso-14229-and-its-relationship-to-secure-boot" title="Permanent link">&para;</a></h3>
+<p><strong>UDS</strong> is the diagnostic/reprogramming protocol (over CAN/CAN-FD,
+DoIP) used by tools (dealership tester, OEM backend) to flash new
+firmware onto an ECU. It does <strong>not replace</strong> secure boot — it is the
+<strong>delivery and access-control mechanism</strong> that gets a new (signed)
+image onto the ECU's flash in the first place; secure boot (folder 05)
+is what verifies that image is genuine <strong>every time the ECU resets</strong>.</p>
+<p>Key UDS services involved in a secure reprogramming session:</p>
+<table>
+<thead>
+<tr>
+<th>Service ID</th>
+<th>Name</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0x10</strong></td>
+<td>Diagnostic Session Control</td>
+<td>Enter Programming Session before flashing</td>
+</tr>
+<tr>
+<td><strong>0x27</strong></td>
+<td>Security Access (seed/key)</td>
+<td>Challenge-response gate — ECU sends a random "seed", tester must respond with the correct "key" (often HSM-derived) to unlock reprogramming</td>
+</tr>
+<tr>
+<td><strong>0x34</strong></td>
+<td>Request Download</td>
+<td>Announce the incoming firmware block (address, size, compression/encryption info)</td>
+</tr>
+<tr>
+<td><strong>0x36</strong></td>
+<td>Transfer Data</td>
+<td>Stream the actual firmware bytes, block by block</td>
+</tr>
+<tr>
+<td><strong>0x37</strong></td>
+<td>Request Transfer Exit</td>
+<td>Finalize transfer; ECU may verify a checksum/signature here before accepting</td>
+</tr>
+<tr>
+<td><strong>0x31</strong></td>
+<td>Routine Control</td>
+<td>Trigger vendor-specific routines, e.g., "verify signature now", "erase flash", "check dependencies"</td>
+</tr>
+</tbody>
+</table>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Tool as Diagnostic Tool / OEM Backend
+    participant ECU as ECU (Bootloader + Application)
+    participant SecBoot as ECU Secure Bootloader (folder 05)
+
+    Tool-&gt;&gt;ECU: 0x10 Programming Session
+    ECU-&gt;&gt;Tool: Seed (0x27 sub-function 01)
+    Tool-&gt;&gt;Tool: Compute key (e.g., via OEM HSM, folder 10)
+    Tool-&gt;&gt;ECU: Key (0x27 sub-function 02)
+    ECU-&gt;&gt;Tool: Security Access granted
+    Tool-&gt;&gt;ECU: 0x34 Request Download (signed firmware image)
+    loop Firmware blocks
+        Tool-&gt;&gt;ECU: 0x36 Transfer Data (block N)
+    end
+    Tool-&gt;&gt;ECU: 0x37 Request Transfer Exit
+    ECU-&gt;&gt;ECU: Verify image signature/checksum (folder 04) now, or defer
+    ECU-&gt;&gt;ECU: Store as candidate bank (folder 05 dual-bank)
+    Note over ECU,SecBoot: On NEXT reset...
+    ECU-&gt;&gt;SecBoot: Reset triggers secure bootloader
+    SecBoot-&gt;&gt;SecBoot: Verify signature + anti-rollback (folders 05, 11)
+    alt Valid
+        SecBoot-&gt;&gt;ECU: Boot new firmware
+    else Invalid
+        SecBoot-&gt;&gt;ECU: Reject, fall back to previous bank
+    end</code></pre>
+<p><strong>Key point:</strong> UDS Security Access (0x27) protects <em>who can attempt to
+reprogram</em> the ECU over the bus; it is a <strong>transport-level gate</strong>, not a
+substitute for the bootloader's own cryptographic signature verification.
+A compromised/leaked seed-key algorithm only lets an attacker <em>attempt</em> a
+flash — secure boot's signature check (folders 04/05) is the actual last
+line of defense that decides whether the new image ever executes.</p>
 <table>
 <thead>
 <tr>
@@ -1152,6 +1291,19 @@ path (folder 13) coordinated at the vehicle/fleet level.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="open-source-rtos-secure-boot-in-iot-see-folder-17-for-full-detail">Open-source RTOS secure boot in IoT (see folder 17 for full detail)<a class="headerlink" href="#open-source-rtos-secure-boot-in-iot-see-folder-17-for-full-detail" title="Permanent link">&para;</a></h3>
+<p>Most certified IoT devices don't write a bootloader from scratch — they
+combine an open-source bootloader with an open-source RTOS:</p>
+<ul>
+<li><strong>MCUboot</strong> (bootloader) + <strong>Zephyr</strong> or <strong>FreeRTOS</strong> (application OS)
+  is the most common combination used to reach <strong>PSA Certified Level 1/2</strong>
+  — MCUboot verifies the Zephyr/FreeRTOS image's signature and manages
+  A/B image slots (folder 05) before jumping to it.</li>
+<li><strong>Trusted Firmware-M (TF-M)</strong> provides the PSA Root of Trust
+  implementation (Secure Processing Environment) that Zephyr/FreeRTOS
+  run alongside as the Non-Secure Processing Environment, on
+  Armv8-M/TrustZone-M MCUs.</li>
+</ul>
 <h2 id="4-payment-financial">4. Payment / Financial<a class="headerlink" href="#4-payment-financial" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1244,12 +1396,18 @@ path (folder 13) coordinated at the vehicle/fleet level.</p>
 <li>[ ] Which certification scheme would your HSM/secure element need
       (FIPS 140-3? Common Criteria? PCI HSM?) and why does that depend
       on the domain (payment vs. generic IoT)?</li>
+<li>[ ] In a UDS reprogramming session, which service gates <em>access</em> to
+      reprogram, and which mechanism actually verifies the <em>firmware's
+      authenticity</em> before it runs — why are these two different layers?</li>
+<li>[ ] Name the open-source bootloader + RTOS combination commonly used
+      to reach PSA Certified Level 1/2 on a Cortex-M IoT device.</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
-<p><code>resources/references.md</code> → ISO/SAE 21434, UNECE R155/R156, PSA
-Certified documentation, NIST SP 800-193 / IR 8259, ETSI EN 303 645,
-PCI PTS/HSM standards, EMVCo security guidelines, UEFI Secure Boot
-specification, TCG TPM 2.0, DMTF SPDM.</p>
+<p><code>resources/references.md</code> → ISO/SAE 21434, ISO 14229 (UDS), UNECE
+R155/R156, PSA Certified documentation, NIST SP 800-193 / IR 8259, ETSI
+EN 303 645, PCI PTS/HSM standards, EMVCo security guidelines, UEFI
+Secure Boot specification, TCG TPM 2.0, DMTF SPDM. See folder 17 for
+MCUboot / Zephyr / FreeRTOS / U-Boot implementation details.</p>
 
 
 
@@ -1302,13 +1460,13 @@ specification, TCG TPM 2.0, DMTF SPDM.</p>
         
         
           
-          <a href="../resources/glossary/" class="md-footer__link md-footer__link--next" aria-label="Next: Glossary">
+          <a href="../17-open-source-bootloaders/" class="md-footer__link md-footer__link--next" aria-label="Next: 17 · Open-Source Bootloaders">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Glossary
+                17 · Open-Source Bootloaders
               </div>
             </div>
             <div class="md-footer__button md-icon">

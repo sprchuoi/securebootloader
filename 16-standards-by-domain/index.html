@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://sprchuoi.github.io/securebootloader/10-hsm-implementation/">
+        <link rel="canonical" href="https://sprchuoi.github.io/securebootloader/16-standards-by-domain/">
       
       
-        <link rel="prev" href="../09-key-management-provisioning/">
+        <link rel="prev" href="../15-practical-labs/">
       
       
-        <link rel="next" href="../11-anti-rollback-versioning/">
+        <link rel="next" href="../resources/glossary/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>10 · HSM Implementation - BootChain — Secure Boot Study (MCU → SoC)</title>
+        <title>16 · Standards by Domain - BootChain — Secure Boot Study (MCU → SoC)</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#10-hsm-implementation-station" class="md-skip">
+        <a href="#16-secure-boot-standards-by-domain" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              10 · HSM Implementation
+              16 · Standards by Domain
             
           </span>
         </div>
@@ -556,37 +556,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    10 · HSM Implementation
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../10-hsm-implementation/" class="md-nav__link">
         
   
   
@@ -602,131 +575,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#concept" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Concept
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Concept">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-is-an-hsm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is an HSM?
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#the-signing-station-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The "Signing Station" architecture
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#key-ceremony-basics-root-key-generation-event" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key ceremony basics (Root key generation event)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#day-to-day-signing-station-operation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Day-to-day signing station operation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diagram" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Diagram
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pseudo-code-ci-requesting-a-signature-never-touches-the-private-key" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pseudo-code — CI requesting a signature (never touches the private key)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#checklist" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Checklist
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#further-reading" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Further Reading
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -870,10 +718,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../16-standards-by-domain/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16 · Standards by Domain
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -889,6 +764,125 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concept
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-automotive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Automotive
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-mobile-consumer-electronics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Mobile / Consumer Electronics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-iot-embedded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. IoT / Embedded
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-payment-financial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Payment / Financial
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-server-cloud-data-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Server / Cloud / Data Center
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-folder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to use this folder
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Further Reading
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1029,130 +1023,233 @@
   
 
 
-<h1 id="10-hsm-implementation-station">10 — HSM Implementation Station<a class="headerlink" href="#10-hsm-implementation-station" title="Permanent link">&para;</a></h1>
+<h1 id="16-secure-boot-standards-by-domain">16 — Secure Boot Standards by Domain<a class="headerlink" href="#16-secure-boot-standards-by-domain" title="Permanent link">&para;</a></h1>
 <h2 id="concept">Concept<a class="headerlink" href="#concept" title="Permanent link">&para;</a></h2>
-<p>Folder 09 explained <em>what</em> keys need to exist and <em>why</em> the root key must
-stay offline. This folder covers the <strong>practical, physical/process
-implementation</strong> of an <strong>HSM-based key ceremony and signing station</strong> —
-the real-world "station" where root/intermediate keys are generated and
-firmware images actually get signed before release.</p>
-<h3 id="what-is-an-hsm">What is an HSM?<a class="headerlink" href="#what-is-an-hsm" title="Permanent link">&para;</a></h3>
-<p>A <strong>Hardware Security Module</strong> is tamper-resistant/tamper-evident hardware
-that:
-- Generates private keys <strong>inside its own secure hardware boundary</strong> —
-  the private key material is never exposed in plaintext outside it.
-- Performs signing/encryption operations internally; callers send data
-  in, get a signature/ciphertext out.
-- Enforces <strong>access control</strong> (PIN/smartcard/quorum authentication) and
-  <strong>audit logging</strong> of every operation.
-- Is certified to standards like <strong>FIPS 140-2/3 Level 3+</strong> or
-  <strong>Common Criteria</strong> for high-assurance deployments.</p>
-<h3 id="the-signing-station-architecture">The "Signing Station" architecture<a class="headerlink" href="#the-signing-station-architecture" title="Permanent link">&para;</a></h3>
-<p>A production-grade firmware signing setup typically looks like:</p>
-<div class="highlight"><pre><span></span><code>[Air-gapped room / vault]
-   Root HSM  ---(generates &amp; holds)---&gt;  Root Private Key (NEVER exported)
-        |
-        | (M-of-N quorum: e.g. 3-of-5 officers with smartcards)
-        v
-   Root Key Ceremony (witnessed, recorded, audited)
-        |
-        v
-   Signs: Intermediate CA cert  ---&gt; exported to networked Signing HSM
-
-[Networked, access-controlled signing service]
-   Signing HSM  ---(holds)---&gt;  Intermediate/Release signing key
-        |
-        | (Build system submits firmware hash via authenticated API)
-        v
-   Returns: signature  ---&gt;  attached to firmware image ---&gt;  released
-</code></pre></div>
-<h3 id="key-ceremony-basics-root-key-generation-event">Key ceremony basics (Root key generation event)<a class="headerlink" href="#key-ceremony-basics-root-key-generation-event" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Conducted in a <strong>controlled, witnessed environment</strong> (often recorded
-  on video, with an independent auditor present).</li>
-<li>Uses <strong>M-of-N access control</strong> (e.g., quorum of 3 out of 5 authorized
-  officers, each holding a smartcard/token) so no single person can
-  extract or misuse the root key.</li>
-<li>Produces a signed <strong>ceremony script/log</strong> as a compliance artifact.</li>
-<li>The HSM itself may be <strong>cloned/backed up</strong> into a redundant unit using
-  the HSM's own secure key-wrapping mechanism (key material still never
-  appears in plaintext outside HSM boundaries), for disaster recovery.</li>
-</ul>
-<h3 id="day-to-day-signing-station-operation">Day-to-day signing station operation<a class="headerlink" href="#day-to-day-signing-station-operation" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Root HSM</strong>: stays offline/air-gapped, used <em>rarely</em> (e.g., only to
-  issue/renew Intermediate CA certs, maybe yearly).</li>
-<li><strong>Signing HSM(s)</strong>: networked but access-controlled, used <em>frequently</em>
-  by the CI/build pipeline to sign each firmware release with the
-  Intermediate/Release key.</li>
-<li><strong>Least privilege</strong>: build engineers can <em>request</em> a signature via an
-  authenticated API/service; they never get direct HSM admin access.</li>
-<li><strong>Audit trail</strong>: every signing operation logged (who/what/when/which
-  image hash) for traceability and incident response.</li>
-</ul>
-<h2 id="diagram">Diagram<a class="headerlink" href="#diagram" title="Permanent link">&para;</a></h2>
+<p>Everything in folders 00-15 is <strong>vendor/domain-agnostic</strong>. In practice,
+each industry layers its own <strong>certification standards, evaluation
+schemes, and mandatory requirements</strong> on top of these generic secure boot
+concepts. This folder maps the generic concepts to the standards you'll
+actually be asked to comply with, per domain.</p>
 <pre class="mermaid"><code>flowchart TD
-    subgraph AirGapped [Air-Gapped Vault]
-        RootHSM[Root HSM]
-        Officers[M-of-N Officers with Smartcards]
-        Officers --&gt;|quorum auth| RootHSM
-    end
-    subgraph Networked [Access-Controlled Signing Environment]
-        SignHSM[Signing HSM: Intermediate/Release Key]
-        API[Authenticated Signing API]
-        CI[CI/Build Pipeline]
-    end
-    RootHSM --&gt;|signs, rarely| ICACert[Intermediate CA Certificate]
-    ICACert --&gt; SignHSM
-    CI --&gt;|submit image hash| API --&gt; SignHSM
-    SignHSM --&gt;|returns signature| CI
-    CI --&gt; Release[Signed Firmware Release]</code></pre>
-<pre class="mermaid"><code>sequenceDiagram
-    participant Eng as Build Engineer / CI Pipeline
-    participant API as Authenticated Signing API
-    participant HSM as Signing HSM (Intermediate Key)
-    participant Log as Audit Log
-
-    Eng-&gt;&gt;API: Request signature for firmware_hash (with auth token)
-    API-&gt;&gt;API: Authorize request (role/policy check)
-    API-&gt;&gt;HSM: Forward hash to HSM for signing
-    HSM-&gt;&gt;HSM: Sign internally (private key never leaves HSM)
-    HSM-&gt;&gt;API: Return signature
-    API-&gt;&gt;Log: Record who/what/when/hash (immutable audit entry)
-    API-&gt;&gt;Eng: Return signature to attach to release artifact</code></pre>
-<h2 id="pseudo-code-ci-requesting-a-signature-never-touches-the-private-key">Pseudo-code — CI requesting a signature (never touches the private key)<a class="headerlink" href="#pseudo-code-ci-requesting-a-signature-never-touches-the-private-key" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="cm">/* Build pipeline side -- has NO access to private key material */</span>
-<span class="kt">int</span><span class="w"> </span><span class="nf">ci_request_signature</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">image_hash</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span>
-<span class="w">                          </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">sig_out</span><span class="p">[</span><span class="mi">64</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">signing_api_request_t</span><span class="w"> </span><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="p">.</span><span class="n">hash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">},</span><span class="w"> </span><span class="p">.</span><span class="n">auth_token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">load_ci_service_token</span><span class="p">(),</span>
-<span class="w">    </span><span class="p">};</span>
-<span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="n">image_hash</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
-
-<span class="w">    </span><span class="cm">/* Network call to the signing service fronting the HSM */</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">signing_api_call</span><span class="p">(</span><span class="o">&amp;</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">sig_out</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ERR_SIGNING_FAILED</span><span class="p">;</span>
-
-<span class="w">    </span><span class="cm">/* CI only ever sees the resulting signature, never the key */</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">OK</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
+    Generic[Generic Secure Boot Concepts\n00-15] --&gt; Auto[Automotive]
+    Generic --&gt; Mobile[Mobile / Consumer]
+    Generic --&gt; IoT[IoT / Embedded]
+    Generic --&gt; Pay[Payment]
+    Generic --&gt; Cloud[Server / Cloud]</code></pre>
+<hr />
+<h2 id="1-automotive">1. Automotive<a class="headerlink" href="#1-automotive" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Standard</th>
+<th>Scope</th>
+<th>Relates to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ISO/SAE 21434</strong></td>
+<td>Road vehicles cybersecurity engineering — requires a documented cybersecurity lifecycle, threat analysis &amp; risk assessment (TARA) covering secure boot as a control</td>
+<td>00 (threat model), 14 (attacks)</td>
+</tr>
+<tr>
+<td><strong>ISO 26262</strong></td>
+<td>Functional safety (ASIL levels) — secure boot failures must be analyzed for safety impact, not just security</td>
+<td>00, 07</td>
+</tr>
+<tr>
+<td><strong>UNECE R155 / R156</strong></td>
+<td>Regulatory requirement (EU/UN) for cybersecurity management systems (CSMS) and software update management systems (SUMS) — mandates secure, authenticated OTA updates</td>
+<td>11 (anti-rollback), 13 (SSL/TLS for OTA)</td>
+</tr>
+<tr>
+<td><strong>AUTOSAR SecOC / CSM</strong></td>
+<td>AUTOSAR's Secure Onboard Communication + Crypto Service Manager modules — how ECUs handle keys/crypto operations in practice</td>
+<td>04, 09</td>
+</tr>
+<tr>
+<td><strong>HSM profiles (EVITA Full/Medium/Light)</strong></td>
+<td>Automotive-specific HSM classification for in-ECU hardware security modules</td>
+<td>09, 10</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Practical note:</strong> automotive ECUs are essentially the <strong>MCU secure
+boot</strong> model (folder 05) multiplied across dozens of ECUs per vehicle,
+each needing its own key hierarchy (folder 03) and secure OTA update
+path (folder 13) coordinated at the vehicle/fleet level.</p>
+<h2 id="2-mobile-consumer-electronics">2. Mobile / Consumer Electronics<a class="headerlink" href="#2-mobile-consumer-electronics" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Standard / Mechanism</th>
+<th>Scope</th>
+<th>Relates to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Android Verified Boot (AVB)</strong></td>
+<td>Google's dm-verity + rollback-index based verified boot for Android devices</td>
+<td>07, 11, 12</td>
+</tr>
+<tr>
+<td><strong>Apple Secure Boot Chain / Secure Enclave</strong></td>
+<td>Apple's documented boot chain (Boot ROM → LLB → iBoot → kernel) + SEP as a hardware secure enclave</td>
+<td>07, 08</td>
+</tr>
+<tr>
+<td><strong>PSA Certified (Arm)</strong></td>
+<td>Platform Security Architecture — tiered certification (Level 1/2/3) for IoT/mobile chips &amp; OSes, covering RoT, attestation, secure boot</td>
+<td>00, 02, 12</td>
+</tr>
+<tr>
+<td><strong>GlobalPlatform TEE / SE specs</strong></td>
+<td>Standardizes Trusted Execution Environment and Secure Element APIs used across mobile chipsets</td>
+<td>08, 09</td>
+</tr>
+<tr>
+<td><strong>FIDO Alliance (device attestation)</strong></td>
+<td>Attestation format used for authenticator/biometric hardware, builds on measured boot concepts</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-iot-embedded">3. IoT / Embedded<a class="headerlink" href="#3-iot-embedded" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Standard</th>
+<th>Scope</th>
+<th>Relates to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PSA Certified (Arm)</strong></td>
+<td>Same as above — very common baseline target for Cortex-M IoT MCUs</td>
+<td>05, 06</td>
+</tr>
+<tr>
+<td><strong>NIST IR 8259 / SP 800-193</strong></td>
+<td>US NIST baseline cybersecurity + platform firmware resiliency (detect/protect/recover) guidance for IoT</td>
+<td>00, 14</td>
+</tr>
+<tr>
+<td><strong>ETSI EN 303 645</strong></td>
+<td>EU baseline requirements for consumer IoT security (no default passwords, secure update, etc.) — secure boot supports the "verified software update" provision</td>
+<td>11, 13</td>
+</tr>
+<tr>
+<td><strong>IEC 62443</strong></td>
+<td>Industrial control systems security (includes component-level secure boot expectations for industrial IoT/OT devices)</td>
+<td>00, 09</td>
+</tr>
+<tr>
+<td><strong>Matter / CSA (Connectivity Standards Alliance)</strong></td>
+<td>Smart-home interoperability standard with device attestation requirements (Device Attestation Certificate, DAC)</td>
+<td>03, 12</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-payment-financial">4. Payment / Financial<a class="headerlink" href="#4-payment-financial" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Standard</th>
+<th>Scope</th>
+<th>Relates to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PCI PTS (PIN Transaction Security)</strong></td>
+<td>Physical + logical security requirements for payment terminals, including secure boot of the terminal firmware</td>
+<td>06, 09</td>
+</tr>
+<tr>
+<td><strong>PCI HSM</strong></td>
+<td>Security requirements specifically for HSMs used in payment key management</td>
+<td>10</td>
+</tr>
+<tr>
+<td><strong>EMVCo Security Requirements</strong></td>
+<td>Chip card / terminal specifications, including key management and secure element requirements</td>
+<td>03, 08, 09</td>
+</tr>
+<tr>
+<td><strong>Common Criteria (CC) EAL4+/EAL5+/EAL6+</strong></td>
+<td>Formal security evaluation scheme often required for payment secure elements/HSMs</td>
+<td>08, 10</td>
+</tr>
+<tr>
+<td><strong>FIPS 140-2/140-3</strong></td>
+<td>US federal crypto module validation, commonly mandated for HSMs used in payment/root key ceremonies</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-server-cloud-data-center">5. Server / Cloud / Data Center<a class="headerlink" href="#5-server-cloud-data-center" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Standard</th>
+<th>Scope</th>
+<th>Relates to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>UEFI Secure Boot</strong></td>
+<td>PC/server firmware secure boot standard (db/dbx key databases, Secure Boot policy) — the x86 server/PC analogue of folders 01/02</td>
+<td>01, 02, 03</td>
+</tr>
+<tr>
+<td><strong>TCG TPM 2.0</strong></td>
+<td>Trusted Platform Module spec underlying measured boot + remote attestation in servers/VMs</td>
+<td>12</td>
+</tr>
+<tr>
+<td><strong>DMTF SPDM</strong></td>
+<td>Security Protocol and Data Model — standardizes attestation/measurement exchange between hardware components (e.g., NIC, GPU) and host</td>
+<td>12</td>
+</tr>
+<tr>
+<td><strong>NIST SP 800-193</strong></td>
+<td>Platform firmware resiliency (also applies to servers: detect/protect/recover firmware)</td>
+<td>11, 14</td>
+</tr>
+<tr>
+<td><strong>Confidential Computing (CCC)</strong></td>
+<td>Standards for attesting/isolating VM memory (Intel TDX, AMD SEV-SNP, Arm CCA) — measured boot extended into VM launch</td>
+<td>08, 12</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="how-to-use-this-folder">How to use this folder<a class="headerlink" href="#how-to-use-this-folder" title="Permanent link">&para;</a></h2>
+<p>For any project, identify your <strong>domain</strong>, then:
+1. Find your mandatory standard(s) in the table above.
+2. Cross-reference the folder(s) listed — that's the generic concept the
+   standard is layering requirements on top of.
+3. Read the standard's actual text for the compliance-specific details
+   (audit evidence, certification levels, required test labs) — this
+   repo teaches the <em>underlying mechanism</em>, not the paperwork.</p>
 <h2 id="checklist">Checklist<a class="headerlink" href="#checklist" title="Permanent link">&para;</a></h2>
 <ul>
-<li>[ ] What does "the private key never leaves the HSM boundary" actually
-      guarantee, and what does it NOT guarantee (e.g., misuse via a
-      valid but malicious signing request)?</li>
-<li>[ ] Why use M-of-N quorum authorization for the Root key ceremony
-      instead of a single administrator?</li>
-<li>[ ] Why keep the Root HSM air-gapped while the Signing HSM stays
-      networked (tie back to folder 03's CA hierarchy)?</li>
-<li>[ ] What audit information should be logged for every signing
-      operation, and why does that matter for incident response?</li>
+<li>[ ] For your target domain, name the primary cybersecurity standard
+      and the primary safety standard (if applicable) that apply.</li>
+<li>[ ] Which folder's concept does your domain's OTA/update requirement
+      map to (hint: 11 + 13)?</li>
+<li>[ ] Which certification scheme would your HSM/secure element need
+      (FIPS 140-3? Common Criteria? PCI HSM?) and why does that depend
+      on the domain (payment vs. generic IoT)?</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
-<p><code>resources/references.md</code> → FIPS 140-3 (HSM security requirements),
-PCI PIN Security / PCI HSM standards (real-world key ceremony practices),
-vendor HSM docs (Thales Luna, AWS CloudHSM, Entrust nShield).</p>
+<p><code>resources/references.md</code> → ISO/SAE 21434, UNECE R155/R156, PSA
+Certified documentation, NIST SP 800-193 / IR 8259, ETSI EN 303 645,
+PCI PTS/HSM standards, EMVCo security guidelines, UEFI Secure Boot
+specification, TCG TPM 2.0, DMTF SPDM.</p>
 
 
 
@@ -1188,7 +1285,7 @@ vendor HSM docs (Thales Luna, AWS CloudHSM, Entrust nShield).</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../09-key-management-provisioning/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 09 · Key Management &amp; Provisioning">
+          <a href="../15-practical-labs/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 15 · Practical Labs">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1198,20 +1295,20 @@ vendor HSM docs (Thales Luna, AWS CloudHSM, Entrust nShield).</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                09 · Key Management & Provisioning
+                15 · Practical Labs
               </div>
             </div>
           </a>
         
         
           
-          <a href="../11-anti-rollback-versioning/" class="md-footer__link md-footer__link--next" aria-label="Next: 11 · Anti-Rollback &amp; Versioning">
+          <a href="../resources/glossary/" class="md-footer__link md-footer__link--next" aria-label="Next: Glossary">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                11 · Anti-Rollback & Versioning
+                Glossary
               </div>
             </div>
             <div class="md-footer__button md-icon">

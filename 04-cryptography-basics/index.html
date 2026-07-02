@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#05-cryptography-basics-for-secure-boot" class="md-skip">
+        <a href="#04-cryptography-basics-for-secure-boot" class="md-skip">
           Skip to content
         </a>
       
@@ -540,6 +540,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#end-to-end-signature-sequence-pki-aware-full-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-end signature sequence (PKI-aware, full lifecycle)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pseudo-code-signverify-pair" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -883,6 +894,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../16-standards-by-domain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16 · Standards by Domain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -898,10 +936,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   
@@ -919,8 +957,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1013,7 +1051,7 @@
   
 
 
-<h1 id="05-cryptography-basics-for-secure-boot">05 — Cryptography Basics for Secure Boot<a class="headerlink" href="#05-cryptography-basics-for-secure-boot" title="Permanent link">&para;</a></h1>
+<h1 id="04-cryptography-basics-for-secure-boot">04 — Cryptography Basics for Secure Boot<a class="headerlink" href="#04-cryptography-basics-for-secure-boot" title="Permanent link">&para;</a></h1>
 <h2 id="concept">Concept<a class="headerlink" href="#concept" title="Permanent link">&para;</a></h2>
 <p>Secure boot relies on a handful of crypto primitives. You don't need to be
 a cryptographer, but you must understand <em>what each primitive guarantees</em>.</p>
@@ -1085,6 +1123,45 @@ PKA) — verifying on every boot must be fast enough not to hurt UX.</p>
         VER --&gt;|match| OK[Boot allowed]
         VER --&gt;|mismatch| FAIL[Boot blocked]
     end</code></pre>
+<h2 id="end-to-end-signature-sequence-pki-aware-full-lifecycle">End-to-end signature sequence (PKI-aware, full lifecycle)<a class="headerlink" href="#end-to-end-signature-sequence-pki-aware-full-lifecycle" title="Permanent link">&para;</a></h2>
+<p>This ties together folder 03's CA hierarchy, folder 09's provisioning,
+and folder 10's HSM operations into a single timeline — from key
+generation through field verification:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant HSM as Root HSM (offline)
+    participant SignHSM as Signing HSM (networked)
+    participant CI as Build/CI Pipeline
+    participant Factory as Factory Provisioning
+    participant OTP as Device OTP
+    participant Boot as Device Bootloader
+
+    Note over HSM: Key ceremony (folder 10) — once per product life
+    HSM-&gt;&gt;HSM: Generate Root keypair (private key never leaves HSM)
+    HSM-&gt;&gt;SignHSM: Issue Intermediate CA cert (signed by Root, folder 03)
+
+    Note over Factory: Provisioning (folder 09) — once per device
+    Factory-&gt;&gt;OTP: Burn hash(Root public key) — the trust anchor
+
+    Note over CI: Every firmware release
+    CI-&gt;&gt;CI: SHA-256(firmware image)
+    CI-&gt;&gt;SignHSM: Request signature over hash (+ image cert chain)
+    SignHSM-&gt;&gt;CI: Return signature signed by Intermediate/Leaf key
+
+    Note over Boot: Every boot, in the field
+    Boot-&gt;&gt;OTP: Read trusted Root public-key hash
+    Boot-&gt;&gt;Boot: Verify Root cert hash == OTP hash
+    Boot-&gt;&gt;Boot: Verify Intermediate cert signed by Root (folder 03)
+    Boot-&gt;&gt;Boot: Verify Leaf/image signature via Intermediate pubkey
+    Boot-&gt;&gt;Boot: SHA-256(image in flash) == signed hash?
+    alt All checks pass
+        Boot-&gt;&gt;Boot: Boot allowed
+    else Any check fails
+        Boot-&gt;&gt;Boot: Boot blocked / recovery mode
+    end</code></pre>
+<p>Key takeaway: <strong>the device never needs to see or fetch anything at boot
+time except what's already in flash + the single OTP-anchored Root
+hash</strong> — the entire PKI chain (Root → Intermediate → Leaf) travels
+alongside the image itself as embedded certificates.</p>
 <h2 id="pseudo-code-signverify-pair">Pseudo-code — sign/verify pair<a class="headerlink" href="#pseudo-code-signverify-pair" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="cm">/* --- offline, on build server, never on device --- */</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">vendor_sign_image</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">,</span>

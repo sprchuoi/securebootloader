@@ -716,6 +716,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../16-standards-by-domain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16 · Standards by Domain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -735,10 +762,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" checked>
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   
@@ -756,8 +783,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -895,6 +922,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#domain-specific-standards-see-folder-16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain-Specific Standards (see folder 16)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#attacks-offensive-security-research" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -958,17 +996,23 @@
 <li>NIST SP 800-193 — Platform Firmware Resiliency Guidelines</li>
 <li>NIST FIPS 186-5 — Digital Signature Standard (DSS)</li>
 <li>NIST FIPS 180-4 — Secure Hash Standard (SHS)</li>
+<li>RFC 5280 — X.509 Public Key Infrastructure Certificate Profile</li>
 <li>TCG (Trusted Computing Group) — TPM 2.0 Library Specification</li>
 <li>RFC 9334 — Remote ATtestation procedureS (RATS) Architecture</li>
+<li>RFC 8446 — TLS 1.3</li>
 <li>PSA Certified — Platform Security Architecture (Root of Trust,
   Attestation, Certification levels)</li>
+<li>UEFI Forum — UEFI Specification, Secure Boot chapter (db/dbx, Secure
+  Boot policy)</li>
 </ul>
 <h2 id="arm-trustzone-tf-a">Arm / TrustZone / TF-A<a class="headerlink" href="#arm-trustzone-tf-a" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Arm — "TrustZone Technology for Armv8-M" whitepaper</li>
 <li>Arm — "TrustZone for Cortex-A" architecture overview</li>
 <li>ARM Trusted Firmware-A (TF-A) documentation — Trusted Board Boot design
-  (BL1/BL2/BL31/BL32/BL33 stage model)</li>
+  (BL1/BL2/BL31/BL32/BL33 stage model), Firmware Image Package (FIP) spec</li>
+<li>Arm — PSCI (Power State Coordination Interface) specification</li>
+<li>Arm — SPM / FF-A (Firmware Framework for Arm A-profile) documentation</li>
 <li>OP-TEE documentation (open-source TEE reference implementation)</li>
 </ul>
 <h2 id="vendor-secure-boot-implementations-for-comparison-study">Vendor Secure Boot Implementations (for comparison study)<a class="headerlink" href="#vendor-secure-boot-implementations-for-comparison-study" title="Permanent link">&para;</a></h2>
@@ -979,6 +1023,21 @@
 <li>NXP — HAB (High Assurance Boot) for i.MX</li>
 <li>Qualcomm — Secure Boot / Trusted Execution Environment documentation</li>
 <li>Android — Verified Boot (AVB) documentation (rollback index, dm-verity)</li>
+<li>Apple — Platform Security Guide (Secure Boot chain, Secure Enclave)</li>
+</ul>
+<h2 id="domain-specific-standards-see-folder-16">Domain-Specific Standards (see folder 16)<a class="headerlink" href="#domain-specific-standards-see-folder-16" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Automotive</strong>: ISO/SAE 21434, ISO 26262, UNECE R155/R156, AUTOSAR
+  SecOC/CSM, EVITA HSM profiles</li>
+<li><strong>Mobile/Consumer</strong>: Android Verified Boot, Apple Secure Boot Chain,
+  PSA Certified, GlobalPlatform TEE/SE specs, FIDO Alliance attestation</li>
+<li><strong>IoT/Embedded</strong>: PSA Certified, NIST IR 8259, NIST SP 800-193, ETSI EN
+  303 645, IEC 62443, Matter/CSA Device Attestation Certificate</li>
+<li><strong>Payment</strong>: PCI PTS, PCI HSM, EMVCo Security Requirements, Common
+  Criteria (EAL4+/5+/6+), FIPS 140-2/140-3</li>
+<li><strong>Server/Cloud</strong>: UEFI Secure Boot, TCG TPM 2.0, DMTF SPDM, NIST SP
+  800-193, Confidential Computing Consortium specs (Intel TDX, AMD
+  SEV-SNP, Arm CCA)</li>
 </ul>
 <h2 id="attacks-offensive-security-research">Attacks / Offensive Security Research<a class="headerlink" href="#attacks-offensive-security-research" title="Permanent link">&para;</a></h2>
 <ul>
@@ -990,16 +1049,23 @@
 </ul>
 <h2 id="suggested-reading-order">Suggested reading order<a class="headerlink" href="#suggested-reading-order" title="Permanent link">&para;</a></h2>
 <ol>
-<li>PSA Certified Root of Trust guide (ties 00, 02, 06 together)</li>
-<li>Arm TrustZone whitepapers (ties 03, 04 together)</li>
-<li>TF-A Trusted Board Boot design doc (deep dive on 04)</li>
-<li>NIST SP 800-193 (ties 07, 09 together)</li>
-<li>TCG TPM 2.0 spec + RFC 9334 (deep dive on 08)</li>
+<li>PSA Certified Root of Trust guide (ties 00 Foundations, 02 Chain of
+   Trust, 09 Key Management together)</li>
+<li>RFC 5280 (X.509) + Arm TrustZone whitepapers (ties 03 Certificate
+   Authority, 07 SoC Secure Boot together)</li>
+<li>TF-A Trusted Board Boot design doc + PSCI spec (deep dive on 07 SoC
+   Secure Boot)</li>
+<li>NIST SP 800-193 (ties 11 Anti-Rollback, 14 Attacks &amp; Mitigations
+   together)</li>
+<li>TCG TPM 2.0 spec + RFC 9334 (deep dive on 12 Attestation)</li>
+<li>Your domain's standard from folder 16 (e.g., ISO/SAE 21434 for
+   automotive, PCI HSM for payment) as the final compliance layer</li>
 </ol>
 <blockquote>
 <p>Note: Fetch the latest versions of these documents from their official
-sites (arm.com, trustedfirmware.org, nist.gov, trustedcomputinggroup.org)
-since URLs/spec versions change over time.</p>
+sites (arm.com, trustedfirmware.org, nist.gov, trustedcomputinggroup.org,
+uefi.org, globalplatform.org, iso.org) since URLs/spec versions change
+over time.</p>
 </blockquote>
 
 

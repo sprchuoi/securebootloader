@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#04-soc-secure-boot-arm-cortex-a-trustzone-tf-a" class="md-skip">
+        <a href="#07-soc-secure-boot-arm-cortex-a-trustzone-tf-a" class="md-skip">
           Skip to content
         </a>
       
@@ -571,19 +571,41 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diagram-full-sequence" class="md-nav__link">
+          <li class="md-nav__item">
+  <a href="#exception-levels-el-where-each-stage-actually-runs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Diagram — full sequence
+        Exception Levels (EL) — where each stage actually runs
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fip-firmware-image-package-how-bl2-finds-bl31bl32bl33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FIP (Firmware Image Package) — how BL2 finds BL31/BL32/BL33
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smc-call-flow-at-runtime-not-just-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMC call flow at runtime (not just boot)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -599,10 +621,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-differences-vs-mcu-folder-03" class="md-nav__link">
+  <a href="#key-differences-vs-mcu-folder-05" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key differences vs MCU (folder 03)
+        Key differences vs MCU (folder 05)
       
     </span>
   </a>
@@ -861,6 +883,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../16-standards-by-domain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16 · Standards by Domain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
       
@@ -876,10 +925,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
         
           
-          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
             
   
   
@@ -897,8 +946,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_18">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -991,7 +1040,7 @@
   
 
 
-<h1 id="04-soc-secure-boot-arm-cortex-a-trustzone-tf-a">04 — SoC Secure Boot (Arm Cortex-A, TrustZone, TF-A)<a class="headerlink" href="#04-soc-secure-boot-arm-cortex-a-trustzone-tf-a" title="Permanent link">&para;</a></h1>
+<h1 id="07-soc-secure-boot-arm-cortex-a-trustzone-tf-a">07 — SoC Secure Boot (Arm Cortex-A, TrustZone, TF-A)<a class="headerlink" href="#07-soc-secure-boot-arm-cortex-a-trustzone-tf-a" title="Permanent link">&para;</a></h1>
 <h2 id="concept">Concept<a class="headerlink" href="#concept" title="Permanent link">&para;</a></h2>
 <p>On an <strong>Application Processor SoC</strong> (Cortex-A), secure boot is far more
 elaborate than an MCU because there's a rich OS (Linux/Android/QNX), an
@@ -1052,7 +1101,77 @@ switch between worlds, via <code>SMC</code> (Secure Monitor Call) instructions.<
     end
     BL31 --&gt;|verifies + jumps| BL33
     BL31 &lt;-.SMC calls.-&gt; BL32</code></pre>
-<h2 id="diagram-full-sequence">Diagram — full sequence<a class="headerlink" href="#diagram-full-sequence" title="Permanent link">&para;</a></h2>
+<h3 id="exception-levels-el-where-each-stage-actually-runs">Exception Levels (EL) — where each stage actually runs<a class="headerlink" href="#exception-levels-el-where-each-stage-actually-runs" title="Permanent link">&para;</a></h3>
+<p>Arm Cortex-A uses a privilege hierarchy of <strong>Exception Levels</strong>, and
+TrustZone doubles it into Secure (S) and Non-Secure (NS) variants:</p>
+<table>
+<thead>
+<tr>
+<th>EL</th>
+<th>Non-Secure</th>
+<th>Secure</th>
+<th>Typical occupant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EL3</td>
+<td>— (highest privilege is always Secure)</td>
+<td>✅ Secure Monitor</td>
+<td>BL1, BL31 (TF-A runtime)</td>
+</tr>
+<tr>
+<td>EL2</td>
+<td>Hypervisor</td>
+<td>Secure Partition Manager (optional)</td>
+<td>KVM/Xen (NS), SPM (S, Armv8.4+)</td>
+</tr>
+<tr>
+<td>EL1</td>
+<td>OS kernel</td>
+<td>Trusted OS</td>
+<td>Linux/Android kernel (NS), BL32/OP-TEE (S)</td>
+</tr>
+<tr>
+<td>EL0</td>
+<td>User apps</td>
+<td>Trusted Applications (TAs)</td>
+<td>Normal apps (NS), TEE TAs (S)</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>only</strong> code that can move between Secure and Non-Secure worlds is
+EL3 (the Secure Monitor / BL31), entered via an <code>SMC</code> (Secure Monitor
+Call) instruction or an exception. This is the enforced "narrow waist"
+of the whole TrustZone security model.</p>
+<h3 id="fip-firmware-image-package-how-bl2-finds-bl31bl32bl33">FIP (Firmware Image Package) — how BL2 finds BL31/BL32/BL33<a class="headerlink" href="#fip-firmware-image-package-how-bl2-finds-bl31bl32bl33" title="Permanent link">&para;</a></h3>
+<p>TF-A packages BL31, BL32, BL33 (and their certificates, in the "Trusted
+Board Boot" flow) into a single flash blob called a <strong>FIP</strong>, indexed by
+UUID so BL2 can locate each image + its certificate without a filesystem:</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph FIP[fip.bin - single flash image]
+        C1[BL31 cert] --&gt; I1[BL31 image]
+        C2[BL32 cert optional] --&gt; I2[BL32 image]
+        C3[BL33 cert] --&gt; I3[BL33 image]
+    end
+    BL2 --&gt;|parse ToC by UUID| FIP</code></pre>
+<h3 id="smc-call-flow-at-runtime-not-just-boot">SMC call flow at runtime (not just boot)<a class="headerlink" href="#smc-call-flow-at-runtime-not-just-boot" title="Permanent link">&para;</a></h3>
+<p>Once booted, BL31 keeps running forever at EL3 as the <strong>Secure Monitor</strong>,
+servicing <code>SMC</code> calls from Non-Secure world (e.g., NS kernel requesting a
+CPU power state change via <strong>PSCI</strong>, or a Normal World app asking the TEE
+to do a crypto operation):</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant NS as Non-Secure Kernel (EL1)
+    participant Mon as BL31 Secure Monitor (EL3)
+    participant TEE as BL32 Trusted OS (S-EL1)
+
+    NS-&gt;&gt;Mon: SMC #0x84000002 (PSCI CPU_OFF) or vendor SMC
+    Mon-&gt;&gt;Mon: Validate SMC function ID + world switch
+    alt Targets Trusted OS
+        Mon-&gt;&gt;TEE: Dispatch to Trusted OS (S-EL1)
+        TEE-&gt;&gt;Mon: Return result (e.g., signed blob, decrypted key)
+    end
+    Mon-&gt;&gt;NS: Return result via SMC return registers</code></pre>
 <pre class="mermaid"><code>sequenceDiagram
     participant ROM as BL1 (Boot ROM, immutable)
     participant OTP as OTP Root Key Hash
@@ -1094,7 +1213,7 @@ switch between worlds, via <code>SMC</code> (Secure Monitor Call) instructions.<
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">BL2_OK</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-<h2 id="key-differences-vs-mcu-folder-03">Key differences vs MCU (folder 03)<a class="headerlink" href="#key-differences-vs-mcu-folder-03" title="Permanent link">&para;</a></h2>
+<h2 id="key-differences-vs-mcu-folder-05">Key differences vs MCU (folder 05)<a class="headerlink" href="#key-differences-vs-mcu-folder-05" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1144,10 +1263,18 @@ switch between worlds, via <code>SMC</code> (Secure Monitor Call) instructions.<
 <li>[ ] Why is BL32 (Trusted OS) optional but BL31 is not?</li>
 <li>[ ] How does dm-verity extend the chain of trust into the running OS
       filesystem?</li>
+<li>[ ] Why is EL3 the only level that can cross the Secure/Non-Secure
+      boundary, and why is that a deliberate security design choice?</li>
+<li>[ ] What does a FIP's UUID-indexed Table of Contents let BL2 avoid
+      needing (hint: a filesystem)?</li>
+<li>[ ] Give an example of a runtime SMC call and trace which component
+      handles it.</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
 <p><code>resources/references.md</code> → ARM Trusted Firmware-A docs (Trusted Board
-Boot design), Arm TrustZone technology overview, OP-TEE documentation.</p>
+Boot design, Firmware Image Package spec), Arm TrustZone technology
+overview, Arm PSCI specification, Arm SPM/FF-A documentation, OP-TEE
+documentation.</p>
 
 
 

@@ -529,6 +529,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#big-picture-why-when-and-which-model-is-implemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Big picture — why, when, and which model is implemented
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Big picture — why, when, and which model is implemented">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-when-model-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why / when / model mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#algorithm-deep-dive-rsa-ecdsa-aes-cbc-aes-cmac" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1213,6 +1241,76 @@ of data. Any change to the data changes the hash completely.
 </table>
 <p>This is why many MCUs include a <strong>hardware crypto accelerator</strong> (AES/SHA/
 PKA) — verifying on every boot must be fast enough not to hurt UX.</p>
+<h2 id="big-picture-why-when-and-which-model-is-implemented">Big picture — why, when, and which model is implemented<a class="headerlink" href="#big-picture-why-when-and-which-model-is-implemented" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+    subgraph DEV["Development / Release (offline)"]
+        BLD[Build firmware]
+        HASH[Hash image (SHA-256)]
+        SIGN{Need authenticity?}
+        CONF{Need confidentiality?}
+        MACQ{Symmetric-only device fleet?}
+    end
+
+    subgraph FACTORY["Factory provisioning (once per device)"]
+        OTP[Provision trust anchor in OTP/eFuse]
+        SYM[Optionally provision per-device AES key]
+    end
+
+    subgraph FIELD["In-field boot / OTA (every boot)"]
+        VERIFY[Verify signature or MAC]
+        DEC[Decrypt image if encrypted]
+        BOOT[Allow boot only if checks pass]
+    end
+
+    BLD --&gt; HASH --&gt; SIGN
+    SIGN --&gt;|Yes, public-key model| ASYM[Implement RSA or ECDSA signature]
+    SIGN --&gt;|No| MACQ
+    MACQ --&gt;|Closed symmetric system| CM[Implement AES-CMAC]
+    MACQ --&gt;|Open ecosystem / long-term update| ASYM
+    CONF --&gt;|Yes| CBC[Implement AES-CBC/CTR/GCM encryption]
+    CONF --&gt;|No| SKIP[Skip encryption]
+    ASYM --&gt; OTP --&gt; VERIFY
+    CM --&gt; SYM --&gt; VERIFY
+    CBC --&gt; DEC
+    SKIP --&gt; VERIFY
+    VERIFY --&gt; BOOT
+    DEC --&gt; BOOT</code></pre>
+<h3 id="why-when-model-mapping">Why / when / model mapping<a class="headerlink" href="#why-when-model-mapping" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Why implement</th>
+<th>When used in lifecycle</th>
+<th>Typical model implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ensure firmware is from trusted vendor (authenticity)</td>
+<td>Signing at release, verification at every boot</td>
+<td><strong>ECDSA</strong> (preferred on MCU) or <strong>RSA</strong> (legacy/compatibility)</td>
+</tr>
+<tr>
+<td>Protect firmware IP from flash readout (confidentiality)</td>
+<td>Encrypt before release, decrypt during boot/OTA</td>
+<td><strong>AES-CBC/CTR/GCM</strong> (CBC must be paired with signature/MAC)</td>
+</tr>
+<tr>
+<td>Lightweight integrity/auth in closed device fleet</td>
+<td>Tag generation at release, tag verify at boot</td>
+<td><strong>AES-CMAC</strong> with per-device symmetric keys</td>
+</tr>
+<tr>
+<td>Keep trust scalable across many devices and key rotation</td>
+<td>Across product lifetime (new releases, revocation, renewal)</td>
+<td><strong>Asymmetric model (RSA/ECDSA + certificate chain)</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementation rule of thumb:</strong> most production secure boot designs use
+<strong>ECDSA/RSA for authenticity</strong> and optionally <strong>AES encryption</strong> for IP
+protection; <strong>AES-CMAC-only</strong> is mainly for tightly controlled, symmetric
+key-managed environments.</p>
 <h2 id="algorithm-deep-dive-rsa-ecdsa-aes-cbc-aes-cmac">Algorithm Deep Dive — RSA, ECDSA, AES-CBC, AES-CMAC<a class="headerlink" href="#algorithm-deep-dive-rsa-ecdsa-aes-cbc-aes-cmac" title="Permanent link">&para;</a></h2>
 <h3 id="rsa-asymmetric-signature">RSA (asymmetric signature)<a class="headerlink" href="#rsa-asymmetric-signature" title="Permanent link">&para;</a></h3>
 <p>RSA signatures use modular arithmetic over large integers. In secure

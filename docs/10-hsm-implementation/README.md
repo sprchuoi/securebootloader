@@ -23,23 +23,37 @@ that:
 ### The "Signing Station" architecture
 A production-grade firmware signing setup typically looks like:
 
-```
-[Air-gapped room / vault]
-   Root HSM  ---(generates & holds)--->  Root Private Key (NEVER exported)
-        |
-        | (M-of-N quorum: e.g. 3-of-5 officers with smartcards)
-        v
-   Root Key Ceremony (witnessed, recorded, audited)
-        |
-        v
-   Signs: Intermediate CA cert  ---> exported to networked Signing HSM
+```mermaid
+flowchart TD
+    subgraph VAULT["Air-gapped room / vault"]
+        ROOTHSM[Root HSM]
+        ROOTKEY[(Root Private Key<br/>NEVER exported)]
+        QUORUM["M-of-N quorum<br/>e.g. 3-of-5 officers with smartcards"]
+        CEREMONY[Root Key Ceremony<br/>witnessed, recorded, audited]
+        ICACERT[Intermediate CA cert]
 
-[Networked, access-controlled signing service]
-   Signing HSM  ---(holds)--->  Intermediate/Release signing key
-        |
-        | (Build system submits firmware hash via authenticated API)
-        v
-   Returns: signature  --->  attached to firmware image --->  released
+        ROOTHSM -->|generates & holds| ROOTKEY
+        QUORUM --> CEREMONY
+        ROOTKEY --> CEREMONY
+        CEREMONY -->|signs| ICACERT
+    end
+
+    subgraph SIGNSVC["Networked, access-controlled signing service"]
+        SIGNHSM[Signing HSM]
+        RELKEY[(Intermediate / Release signing key)]
+        BUILD[Build system]
+        SIG[Signature]
+        IMAGE[Firmware image + signature]
+        RELEASE[Released]
+
+        BUILD -->|submits firmware hash via authenticated API| SIGNHSM
+        SIGNHSM -->|holds| RELKEY
+        SIGNHSM -->|returns| SIG
+        SIG -->|attached to| IMAGE
+        IMAGE --> RELEASE
+    end
+
+    ICACERT -->|exported to| SIGNHSM
 ```
 
 ### Key ceremony basics (Root key generation event)

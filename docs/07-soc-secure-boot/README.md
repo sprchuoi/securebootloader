@@ -1,4 +1,4 @@
-# 04 — SoC Secure Boot (Arm Cortex-A, TrustZone, TF-A)
+# 07 — SoC Secure Boot (Arm Cortex-A, TrustZone, TF-A)
 
 ## Concept
 
@@ -38,7 +38,59 @@ flowchart TB
     BL31 <-.SMC calls.-> BL32
 ```
 
-## Diagram — full sequence
+### Exception Levels (EL) — where each stage actually runs
+Arm Cortex-A uses a privilege hierarchy of **Exception Levels**, and
+TrustZone doubles it into Secure (S) and Non-Secure (NS) variants:
+
+| EL | Non-Secure | Secure | Typical occupant |
+|---|---|---|---|
+| EL3 | — (highest privilege is always Secure) | ✅ Secure Monitor | BL1, BL31 (TF-A runtime) |
+| EL2 | Hypervisor | Secure Partition Manager (optional) | KVM/Xen (NS), SPM (S, Armv8.4+) |
+| EL1 | OS kernel | Trusted OS | Linux/Android kernel (NS), BL32/OP-TEE (S) |
+| EL0 | User apps | Trusted Applications (TAs) | Normal apps (NS), TEE TAs (S) |
+
+The **only** code that can move between Secure and Non-Secure worlds is
+EL3 (the Secure Monitor / BL31), entered via an `SMC` (Secure Monitor
+Call) instruction or an exception. This is the enforced "narrow waist"
+of the whole TrustZone security model.
+
+### FIP (Firmware Image Package) — how BL2 finds BL31/BL32/BL33
+TF-A packages BL31, BL32, BL33 (and their certificates, in the "Trusted
+Board Boot" flow) into a single flash blob called a **FIP**, indexed by
+UUID so BL2 can locate each image + its certificate without a filesystem:
+
+```mermaid
+flowchart LR
+    subgraph FIP[fip.bin - single flash image]
+        C1[BL31 cert] --> I1[BL31 image]
+        C2[BL32 cert optional] --> I2[BL32 image]
+        C3[BL33 cert] --> I3[BL33 image]
+    end
+    BL2 -->|parse ToC by UUID| FIP
+```
+
+### SMC call flow at runtime (not just boot)
+Once booted, BL31 keeps running forever at EL3 as the **Secure Monitor**,
+servicing `SMC` calls from Non-Secure world (e.g., NS kernel requesting a
+CPU power state change via **PSCI**, or a Normal World app asking the TEE
+to do a crypto operation):
+
+```mermaid
+sequenceDiagram
+    participant NS as Non-Secure Kernel (EL1)
+    participant Mon as BL31 Secure Monitor (EL3)
+    participant TEE as BL32 Trusted OS (S-EL1)
+
+    NS->>Mon: SMC #0x84000002 (PSCI CPU_OFF) or vendor SMC
+    Mon->>Mon: Validate SMC function ID + world switch
+    alt Targets Trusted OS
+        Mon->>TEE: Dispatch to Trusted OS (S-EL1)
+        TEE->>Mon: Return result (e.g., signed blob, decrypted key)
+    end
+    Mon->>NS: Return result via SMC return registers
+```
+
+
 
 ```mermaid
 sequenceDiagram
@@ -87,7 +139,7 @@ int bl2_load_and_verify_all(void) {
 }
 ```
 
-## Key differences vs MCU (folder 03)
+## Key differences vs MCU (folder 05)
 | | MCU | SoC |
 |---|---|---|
 | Stages | 1 (sometimes 2 w/ A-B) | 4-5 (BL1..BL33) |
@@ -104,7 +156,15 @@ int bl2_load_and_verify_all(void) {
 - [ ] Why is BL32 (Trusted OS) optional but BL31 is not?
 - [ ] How does dm-verity extend the chain of trust into the running OS
       filesystem?
+- [ ] Why is EL3 the only level that can cross the Secure/Non-Secure
+      boundary, and why is that a deliberate security design choice?
+- [ ] What does a FIP's UUID-indexed Table of Contents let BL2 avoid
+      needing (hint: a filesystem)?
+- [ ] Give an example of a runtime SMC call and trace which component
+      handles it.
 
 ## Further Reading
 `resources/references.md` → ARM Trusted Firmware-A docs (Trusted Board
-Boot design), Arm TrustZone technology overview, OP-TEE documentation.
+Boot design, Firmware Image Package spec), Arm TrustZone technology
+overview, Arm PSCI specification, Arm SPM/FF-A documentation, OP-TEE
+documentation.

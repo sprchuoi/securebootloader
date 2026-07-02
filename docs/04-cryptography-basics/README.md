@@ -1,4 +1,4 @@
-# 05 — Cryptography Basics for Secure Boot
+# 04 — Cryptography Basics for Secure Boot
 
 ## Concept
 
@@ -59,6 +59,51 @@ flowchart LR
         VER -->|mismatch| FAIL[Boot blocked]
     end
 ```
+
+## End-to-end signature sequence (PKI-aware, full lifecycle)
+
+This ties together folder 03's CA hierarchy, folder 09's provisioning,
+and folder 10's HSM operations into a single timeline — from key
+generation through field verification:
+
+```mermaid
+sequenceDiagram
+    participant HSM as Root HSM (offline)
+    participant SignHSM as Signing HSM (networked)
+    participant CI as Build/CI Pipeline
+    participant Factory as Factory Provisioning
+    participant OTP as Device OTP
+    participant Boot as Device Bootloader
+
+    Note over HSM: Key ceremony (folder 10) — once per product life
+    HSM->>HSM: Generate Root keypair (private key never leaves HSM)
+    HSM->>SignHSM: Issue Intermediate CA cert (signed by Root, folder 03)
+
+    Note over Factory: Provisioning (folder 09) — once per device
+    Factory->>OTP: Burn hash(Root public key) — the trust anchor
+
+    Note over CI: Every firmware release
+    CI->>CI: SHA-256(firmware image)
+    CI->>SignHSM: Request signature over hash (+ image cert chain)
+    SignHSM->>CI: Return signature signed by Intermediate/Leaf key
+
+    Note over Boot: Every boot, in the field
+    Boot->>OTP: Read trusted Root public-key hash
+    Boot->>Boot: Verify Root cert hash == OTP hash
+    Boot->>Boot: Verify Intermediate cert signed by Root (folder 03)
+    Boot->>Boot: Verify Leaf/image signature via Intermediate pubkey
+    Boot->>Boot: SHA-256(image in flash) == signed hash?
+    alt All checks pass
+        Boot->>Boot: Boot allowed
+    else Any check fails
+        Boot->>Boot: Boot blocked / recovery mode
+    end
+```
+
+Key takeaway: **the device never needs to see or fetch anything at boot
+time except what's already in flash + the single OTP-anchored Root
+hash** — the entire PKI chain (Root → Intermediate → Leaf) travels
+alongside the image itself as embedded certificates.
 
 ## Pseudo-code — sign/verify pair
 

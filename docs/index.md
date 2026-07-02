@@ -25,6 +25,7 @@ BootChain/
 ├── 13-ssl-tls-concept/             # TLS/mTLS, cert chains applied to network trust
 ├── 14-attacks-mitigations/         # Glitching, downgrade, TOCTOU, known CVEs
 ├── 15-practical-labs/              # Hands-on: build a toy secure boot verifier
+├── 16-standards-by-domain/         # ISO 21434, PSA Certified, PCI HSM, UEFI, etc. per industry
 └── resources/                      # Glossary + external references
 ```
 
@@ -55,6 +56,7 @@ flowchart TD
     CA --> SSL
     SSL --> J[14 Attacks & Mitigations]
     J --> K[15 Practical Labs]
+    K --> ST[16 Standards by Domain]
 ```
 
 ### Concept map — how the new topics relate to the core chain

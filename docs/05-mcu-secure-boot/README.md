@@ -1,4 +1,4 @@
-# 03 — MCU Secure Boot (Arm Cortex-M)
+# 05 — MCU Secure Boot (Arm Cortex-M)
 
 ## Concept
 

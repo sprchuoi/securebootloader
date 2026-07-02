@@ -1,4 +1,4 @@
-# 08 — Attestation & Measured Boot
+# 12 — Attestation & Measured Boot
 
 ## Concept
 

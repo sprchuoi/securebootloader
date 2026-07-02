@@ -20,7 +20,7 @@ automatically (see `.github/workflows/deploy-docs.yml`).
 securebootloader/
 ├── docs/                        # All study content (published to GitHub Pages)
 │   ├── index.md                 # Site home page (study roadmap)
-│   ├── 00-foundations/ ... 15-practical-labs/
+│   ├── 00-foundations/ ... 16-standards-by-domain/
 │   └── resources/                # Glossary + references
 ├── mkdocs.yml                    # Site config, nav, theme, Mermaid support
 ├── requirements.txt               # Python deps to build docs (mkdocs-material)

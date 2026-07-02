@@ -529,6 +529,78 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#algorithm-deep-dive-rsa-ecdsa-aes-cbc-aes-cmac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Algorithm Deep Dive — RSA, ECDSA, AES-CBC, AES-CMAC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Algorithm Deep Dive — RSA, ECDSA, AES-CBC, AES-CMAC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rsa-asymmetric-signature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RSA (asymmetric signature)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecdsa-asymmetric-signature-on-elliptic-curves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ECDSA (asymmetric signature on elliptic curves)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aes-cbc-symmetric-encryption-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES-CBC (symmetric encryption mode)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aes-cmac-symmetric-mac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AES-CMAC (symmetric MAC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-selection-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick selection guide
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#diagram-sign-offline-vendor-side-vs-verify-on-device" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1095,6 +1167,8 @@ of data. Any change to the data changes the hash completely.
   never forge a signature.</li>
 <li>Common choices: <strong>RSA-2048/3072</strong> (older, larger, needs more RAM),
   <strong>ECDSA P-256/P-384</strong> (smaller keys/signatures, common in newer MCUs).</li>
+<li>See "Algorithm Deep Dive" below for the full math, diagrams, and
+  trade-offs of each.</li>
 </ul>
 <h3 id="3-symmetric-encryption-confidentiality-optional">3. Symmetric encryption (confidentiality, optional)<a class="headerlink" href="#3-symmetric-encryption-confidentiality-optional" title="Permanent link">&para;</a></h3>
 <ul>
@@ -1102,6 +1176,8 @@ of data. Any change to the data changes the hash completely.
   if signature isn't the concern (IP protection). Different concern from
   authenticity — encryption != authentication. Use <strong>AES-GCM</strong> (AEAD) when
   you need both.</li>
+<li>See "Algorithm Deep Dive" below for AES-CBC's block-chaining mechanics
+  and why it needs a separate MAC for authenticity.</li>
 </ul>
 <h3 id="4-mac-lightweight-authenticity-resource-constrained-mcus">4. MAC (lightweight authenticity, resource-constrained MCUs)<a class="headerlink" href="#4-mac-lightweight-authenticity-resource-constrained-mcus" title="Permanent link">&para;</a></h3>
 <ul>
@@ -1109,6 +1185,8 @@ of data. Any change to the data changes the hash completely.
   cheaper than asymmetric verify, but requires a <strong>shared secret</strong> on the
   device (harder to manage than a public key — compromise of device key
   material can be worse).</li>
+<li>See "Algorithm Deep Dive" below for AES-CMAC's construction and why
+  it's popular on MCUs without an asymmetric-crypto accelerator.</li>
 </ul>
 <h3 id="signature-verification-is-not-optional-cost-do-the-math">Signature verification is NOT optional-cost — do the math<a class="headerlink" href="#signature-verification-is-not-optional-cost-do-the-math" title="Permanent link">&para;</a></h3>
 <table>
@@ -1135,6 +1213,109 @@ of data. Any change to the data changes the hash completely.
 </table>
 <p>This is why many MCUs include a <strong>hardware crypto accelerator</strong> (AES/SHA/
 PKA) — verifying on every boot must be fast enough not to hurt UX.</p>
+<h2 id="algorithm-deep-dive-rsa-ecdsa-aes-cbc-aes-cmac">Algorithm Deep Dive — RSA, ECDSA, AES-CBC, AES-CMAC<a class="headerlink" href="#algorithm-deep-dive-rsa-ecdsa-aes-cbc-aes-cmac" title="Permanent link">&para;</a></h2>
+<h3 id="rsa-asymmetric-signature">RSA (asymmetric signature)<a class="headerlink" href="#rsa-asymmetric-signature" title="Permanent link">&para;</a></h3>
+<p>RSA signatures use modular arithmetic over large integers. In secure
+boot, vendor signs offline with private exponent <code>d</code>; device verifies
+with public exponent <code>e</code> from OTP/provisioned key material.</p>
+<pre class="mermaid"><code>flowchart LR
+    H[SHA-256 digest] --&gt; PAD[PKCS#1 v1.5 / PSS padding]
+    PAD --&gt; SIGN[Signature = m^d mod n]
+    SIGN --&gt; IMG[Signature stored in image header]
+    IMG --&gt; VER[Device computes s^e mod n and checks digest match]</code></pre>
+<ul>
+<li>Strengths: mature ecosystem, widely available tooling/certs.</li>
+<li>Trade-off: larger key/signature sizes and more RAM/code than ECC.</li>
+<li>Typical secure-boot profile: RSA-2048 verify on device, signing in HSM.</li>
+</ul>
+<h3 id="ecdsa-asymmetric-signature-on-elliptic-curves">ECDSA (asymmetric signature on elliptic curves)<a class="headerlink" href="#ecdsa-asymmetric-signature-on-elliptic-curves" title="Permanent link">&para;</a></h3>
+<p>ECDSA signs the hash using an elliptic-curve private key (typically
+P-256 for MCU class devices). Verification uses curve point operations.</p>
+<pre class="mermaid"><code>flowchart LR
+    H2[SHA-256 digest] --&gt; K[Generate nonce k]
+    K --&gt; R[Compute curve point k*G -&gt; r]
+    H2 --&gt; S[Compute s = k^-1(h + r*d) mod n]
+    R --&gt; SIG[(r,s) signature]
+    S --&gt; SIG
+    SIG --&gt; VERIFY[Device verifies with public key Q on curve]</code></pre>
+<ul>
+<li>Strengths: much smaller keys/signatures than RSA for similar security.</li>
+<li>Trade-off: needs strong nonce generation; bad nonce reuse leaks private key.</li>
+<li>Typical secure-boot profile: ECDSA P-256 + SHA-256 for constrained devices.</li>
+</ul>
+<h3 id="aes-cbc-symmetric-encryption-mode">AES-CBC (symmetric encryption mode)<a class="headerlink" href="#aes-cbc-symmetric-encryption-mode" title="Permanent link">&para;</a></h3>
+<p>AES-CBC encrypts firmware for confidentiality (IP protection). Each
+ciphertext block depends on the previous block plus IV.</p>
+<pre class="mermaid"><code>flowchart LR
+    IV[IV] --&gt; X1[XOR with P1]
+    P1[Plain block 1] --&gt; X1
+    X1 --&gt; E1[AES-Encrypt with key K]
+    E1 --&gt; C1[Cipher block 1]
+    C1 --&gt; X2[XOR with P2]
+    P2[Plain block 2] --&gt; X2
+    X2 --&gt; E2[AES-Encrypt with key K]
+    E2 --&gt; C2[Cipher block 2]</code></pre>
+<ul>
+<li>Strengths: simple, hardware-accelerated on many MCUs.</li>
+<li>Critical limitation: <strong>CBC gives confidentiality only</strong>, not authenticity.</li>
+<li>Secure-boot rule: never use AES-CBC alone for firmware acceptance;
+  pair with signature/MAC (or use AEAD like AES-GCM).</li>
+</ul>
+<h3 id="aes-cmac-symmetric-mac">AES-CMAC (symmetric MAC)<a class="headerlink" href="#aes-cmac-symmetric-mac" title="Permanent link">&para;</a></h3>
+<p>AES-CMAC computes an authentication tag from firmware blocks using AES.
+It proves integrity/authenticity to anyone with the same secret key.</p>
+<pre class="mermaid"><code>flowchart LR
+    B1[Block 1] --&gt; C1[Chaining state]
+    C1 --&gt; A1[AES(K, state)]
+    B2[Block 2] --&gt; C2[Next XOR + chain]
+    A1 --&gt; C2
+    C2 --&gt; A2[AES(K, state)]
+    LAST[Last block + subkey K1/K2] --&gt; T[AES(K, final state)]
+    A2 --&gt; LAST
+    T --&gt; TAG[CMAC tag]</code></pre>
+<ul>
+<li>Strengths: lightweight authentication when both ends share a secret.</li>
+<li>Trade-off: symmetric key must exist on device; extracting one key can
+  threaten that device's trust model.</li>
+<li>Good fit: closed systems with per-device keys + anti-cloning design.</li>
+</ul>
+<h3 id="quick-selection-guide">Quick selection guide<a class="headerlink" href="#quick-selection-guide" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Primary purpose</th>
+<th>Key management model</th>
+<th>Common secure-boot use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RSA</td>
+<td>Signature (authenticity)</td>
+<td>Public key on device, private key offline/HSM</td>
+<td>Legacy/compatibility-heavy platforms</td>
+</tr>
+<tr>
+<td>ECDSA</td>
+<td>Signature (authenticity)</td>
+<td>Public key on device, private key offline/HSM</td>
+<td>Modern MCU/SoC secure boot</td>
+</tr>
+<tr>
+<td>AES-CBC</td>
+<td>Encryption (confidentiality)</td>
+<td>Shared symmetric key</td>
+<td>Optional firmware confidentiality</td>
+</tr>
+<tr>
+<td>AES-CMAC</td>
+<td>MAC (integrity/authenticity)</td>
+<td>Shared symmetric key</td>
+<td>Lightweight integrity in constrained systems</td>
+</tr>
+</tbody>
+</table>
 <h2 id="diagram-sign-offline-vendor-side-vs-verify-on-device">Diagram — sign (offline, vendor side) vs verify (on-device)<a class="headerlink" href="#diagram-sign-offline-vendor-side-vs-verify-on-device" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>flowchart LR
     subgraph Vendor Build System [offline / HSM]
@@ -1214,10 +1395,13 @@ alongside the image itself as embedded certificates.</p>
 <li>[ ] Why is ECDSA often preferred over RSA on constrained MCUs?</li>
 <li>[ ] What's the risk of using a shared-secret MAC instead of asymmetric
       signatures for a fleet of devices?</li>
+<li>[ ] Why is AES-CBC alone unsafe for boot authenticity checks?</li>
+<li>[ ] In what project conditions is AES-CMAC acceptable vs ECDSA/RSA?</li>
 </ul>
 <h2 id="further-reading">Further Reading<a class="headerlink" href="#further-reading" title="Permanent link">&para;</a></h2>
 <p><code>resources/references.md</code> → NIST FIPS 186-5 (digital signatures), FIPS
-180-4 (SHA), "Practical Cryptography for Developers" (free online book).</p>
+180-4 (SHA), NIST SP 800-38A (CBC mode), NIST SP 800-38B (CMAC),
+"Practical Cryptography for Developers" (free online book).</p>
 
 
 

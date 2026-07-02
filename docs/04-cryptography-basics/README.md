@@ -52,37 +52,36 @@ PKA) — verifying on every boot must be fast enough not to hurt UX.
 ```mermaid
 flowchart LR
     subgraph DEV["Development / Release (offline)"]
-        BLD[Build firmware]
-        HASH[Hash image (SHA-256)]
-        SIGN{Need authenticity?}
-        CONF{Need confidentiality?}
-        MACQ{Symmetric-only device fleet?}
+        BLD["Build firmware"]
+        HASH["Hash image (SHA-256)"]
+        SIGN{"Need authenticity?"}
+        MACQ{"Symmetric-only device fleet?"}
+        CONF{"Need confidentiality?"}
     end
 
     subgraph FACTORY["Factory provisioning (once per device)"]
-        OTP[Provision trust anchor in OTP/eFuse]
-        SYM[Optionally provision per-device AES key]
+        OTP["Provision trust anchor in OTP / eFuse"]
+        SYM["Optionally provision per-device AES key"]
     end
 
     subgraph FIELD["In-field boot / OTA (every boot)"]
-        VERIFY[Verify signature or MAC]
-        DEC[Decrypt image if encrypted]
-        BOOT[Allow boot only if checks pass]
+        VERIFY["Verify signature or MAC"]
+        DEC["Decrypt image if encrypted"]
+        BOOT["Allow boot only if checks pass"]
     end
 
     BLD --> HASH --> SIGN
-    SIGN -->|Yes, public-key model| ASYM[Implement RSA or ECDSA signature]
-    SIGN -->|No| MACQ
-    MACQ -->|Closed symmetric system| CM[Implement AES-CMAC]
-    MACQ -->|Open ecosystem / long-term update| ASYM
-    CONF -->|Yes| CBC[Implement AES-CBC/CTR/GCM encryption]
-    CONF -->|No| SKIP[Skip encryption]
-    ASYM --> OTP --> VERIFY
-    CM --> SYM --> VERIFY
-    CBC --> DEC
+    SIGN -->|"Yes, public-key model"| ASYM["Implement RSA or ECDSA signature"]
+    SIGN -->|"No"| MACQ
+    MACQ -->|"Closed symmetric system"| CM["Implement AES-CMAC"]
+    MACQ -->|"Open ecosystem / long-term update"| ASYM
+    ASYM --> OTP --> CONF
+    CM --> SYM --> CONF
+    CONF -->|"Yes"| CBC["Implement AES-CBC / CTR / GCM encryption"]
+    CONF -->|"No"| SKIP["Skip encryption"]
+    CBC --> DEC --> VERIFY
     SKIP --> VERIFY
     VERIFY --> BOOT
-    DEC --> BOOT
 ```
 
 ### Why / when / model mapping
@@ -108,10 +107,10 @@ with public exponent `e` from OTP/provisioned key material.
 
 ```mermaid
 flowchart LR
-    H[SHA-256 digest] --> PAD[PKCS#1 v1.5 / PSS padding]
-    PAD --> SIGN[Signature = m^d mod n]
-    SIGN --> IMG[Signature stored in image header]
-    IMG --> VER[Device computes s^e mod n and checks digest match]
+    H["SHA-256 digest"] --> PAD["PKCS#1 v1.5 / PSS padding"]
+    PAD --> SIGN["Signature = m^d mod n"]
+    SIGN --> IMG["Signature stored in image header"]
+    IMG --> VER["Device computes s^e mod n and checks digest match"]
 ```
 
 - Strengths: mature ecosystem, widely available tooling/certs.
@@ -124,12 +123,12 @@ P-256 for MCU class devices). Verification uses curve point operations.
 
 ```mermaid
 flowchart LR
-    H2[SHA-256 digest] --> K[Generate nonce k]
-    K --> R[Compute curve point k*G -> r]
-    H2 --> S[Compute s = k^-1(h + r*d) mod n]
+    H2["SHA-256 digest"] --> K["Generate nonce k"]
+    K --> R["Compute curve point k times G to get r"]
+    H2 --> S["Compute s = k^-1 (h + r*d) mod n"]
     R --> SIG["(r, s) signature"]
     S --> SIG
-    SIG --> VERIFY[Device verifies with public key Q on curve]
+    SIG --> VERIFY["Device verifies with public key Q on curve"]
 ```
 
 - Strengths: much smaller keys/signatures than RSA for similar security.
@@ -142,14 +141,14 @@ ciphertext block depends on the previous block plus IV.
 
 ```mermaid
 flowchart LR
-    IV[IV] --> X1[XOR with P1]
-    P1[Plain block 1] --> X1
-    X1 --> E1[AES-Encrypt with key K]
-    E1 --> C1[Cipher block 1]
-    C1 --> X2[XOR with P2]
-    P2[Plain block 2] --> X2
-    X2 --> E2[AES-Encrypt with key K]
-    E2 --> C2[Cipher block 2]
+    IV["IV"] --> X1["XOR with P1"]
+    P1["Plain block 1"] --> X1
+    X1 --> E1["AES-Encrypt with key K"]
+    E1 --> C1["Cipher block 1"]
+    C1 --> X2["XOR with P2"]
+    P2["Plain block 2"] --> X2
+    X2 --> E2["AES-Encrypt with key K"]
+    E2 --> C2["Cipher block 2"]
 ```
 
 - Strengths: simple, hardware-accelerated on many MCUs.
@@ -163,14 +162,14 @@ It proves integrity/authenticity to anyone with the same secret key.
 
 ```mermaid
 flowchart LR
-    B1[Block 1] --> C1[Chaining state]
-    C1 --> A1[AES(K, state)]
-    B2[Block 2] --> C2[Next XOR + chain]
+    B1["Block 1"] --> C1["Chaining state"]
+    C1 --> A1["AES(K, state)"]
+    B2["Block 2"] --> C2["Next XOR + chain"]
     A1 --> C2
-    C2 --> A2[AES(K, state)]
-    LAST[Last block + subkey K1/K2] --> T[AES(K, final state)]
+    C2 --> A2["AES(K, state)"]
+    LAST["Last block + subkey K1/K2"] --> T["AES(K, final state)"]
     A2 --> LAST
-    T --> TAG[CMAC tag]
+    T --> TAG["CMAC tag"]
 ```
 
 - Strengths: lightweight authentication when both ends share a secret.
